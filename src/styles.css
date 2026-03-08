@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f6f2ef;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.navbar {
+  background: white;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  font-weight: bold;
+  color: #6b3e26;
+}
+
+.hero {
+  background: #5c2f1f;
+  color: white;
+  padding: 60px 0;
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: 40px;
+  width: 400px;
+}
+
+.hero button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: orange;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.hero img {
+  width: 350px;
+  border-radius: 10px;
+}
+
+.best {
+  padding: 50px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.card button {
+  background: orange;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.custom {
+  background: #e9dfd8;
+  padding: 60px;
+  text-align: center;
+}
+
+.custom button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: orange;
+  border: none;
+  border-radius: 6px;
+}
+

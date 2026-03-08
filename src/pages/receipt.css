@@ -1,0 +1,221 @@
+/* Core Layout - Screen (No changes here) */
+.receipt-wrapper {
+  min-height: 100vh;
+  background: #fdf8f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.receipt-card {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  max-width: 480px; /* Standard width on screen */
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+}
+
+/* Branding Inside Card - Screen & Print */
+.receipt-branding {
+  margin-bottom: 25px;
+}
+
+.brand-font {
+  font-family: 'Dancing Script', cursive;
+  color: #b38b59;
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.branding-divider {
+  border: 0;
+  border-top: 1px dashed #eee;
+  margin-top: 20px;
+}
+
+/* Icons & Typography */
+.success-icon {
+  font-size: 3.5rem;
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+.status-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.thank-you-text {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Receipt Details Box - Screen & Print */
+.receipt-details {
+  background: #f9f9f9;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: left;
+  margin: 30px 0;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.detail-divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 15px 0;
+}
+
+.receipt-address {
+  max-width: 300px; /* Keeps it from stretching the card */
+  margin: 0 auto;
+  line-height: 1.4;
+  font-size: 0.9rem;
+  color: #555;
+  word-wrap: break-word; /* Ensures long addresses don't overflow */
+}
+
+
+.price-text {
+  color: #b38b59;
+  font-size: 1rem;
+}
+
+.delivery-text {
+  color: #b38b59;
+  font-size: 1rem;
+}
+
+
+.payment-tag {
+  display: inline-block;
+  background: #b38b59;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  margin-top: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Buttons - Screen only */
+.receipt-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.print-btn, .home-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.print-btn { background: #f0f0f0; color: #444; }
+.home-btn { background: #b38b59; color: white; }
+
+.print-btn:hover { background: #e5e5e5; }
+.home-btn:hover { background: #967349; transform: translateY(-2px); }
+
+.receipt-items-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: right;
+  }
+  .receipt-items-ul li {
+  font-size: 0.95rem;
+  color: #5d4037;
+  margin-bottom: 4px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .receipt-card, 
+  .receipt-card * {
+    visibility: visible;
+  }
+
+  /* Paper positioning aur Center alignment */
+  .receipt-card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:0;
+    margin: 40px auto !important; 
+    width: 95%;
+    max-width: 500px;
+    padding: 30px;    
+    border: 1px solid #b38b59 !important; 
+    border-radius: 12px;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  /* Typography ko thoda bada karein taaki print clear aaye */
+  .brand-font { font-size: 3rem; }
+  .status-title { font-size: 2rem; margin-top: 15px; }
+
+  .receipt-details {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #eee;
+    background: transparent !important; }
+
+  .receipt-row { 
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 1.1rem;
+    color: #000 !important;
+  }
+
+  .receipt-actions, 
+  .navbar, 
+  footer, 
+  .home-btn, 
+  .print-btn {
+    display: none !important;
+  }
+
+  /* Clean up page background */
+  .receipt-wrapper {
+    background: white !important;
+    padding: 0;
+    display: block;
+  }
+}

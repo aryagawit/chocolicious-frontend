@@ -1,0 +1,232 @@
+/* Container to match your site's soft background */
+.checkout-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fdf1f3 0%, #fdf8f5 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* The Main Card */
+.checkout-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 15px 40px rgba(179, 139, 89, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.checkout-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: #333;
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Address & Input Sections */
+.address-section, .timing-section {
+  margin-bottom: 25px;
+}
+
+.checkout-card label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.checkout-card textarea, 
+.checkout-card input[type="date"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1.5px solid #eee;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: 0.3s;
+  background: #fff;
+  font-family: inherit;
+}
+
+.checkout-card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.checkout-card textarea:focus, 
+.checkout-card input:focus {
+  outline: none;
+  border-color: #b38b59;
+  box-shadow: 0 0 0 3px rgba(179, 139, 89, 0.1);
+}
+
+/* Location Tracker Button */
+.location-btn {
+  background: none;
+  border: none;
+  color: #b38b59;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  transition: 0.2s;
+  padding: 5px 0;
+}
+
+.location-btn:hover {
+  color: #967349;
+  text-decoration: underline;
+}
+
+/* Payment Section */
+.payment-section {
+  background: #fdf8f5;
+  padding: 20px;
+  border-radius: 15px;
+  border-left: 4px solid #b38b59;
+  margin-bottom: 30px;
+}
+
+.payment-section h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.cod-badge {
+  display: inline-block;
+  background: #b38b59;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-section span {
+  display: block;
+  font-size: 0.85rem;
+  color: #777;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Final Confirm Button */
+/* Base Button Style */
+.confirm-order-btn {
+  width: 100%;
+  border: none;
+  padding: 18px;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+/* 🟢 Unlocked State (Ready to click) */
+.confirm-order-btn.unlocked {
+  background: #b38b59;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(179, 139, 89, 0.2);
+}
+
+.confirm-order-btn.unlocked:hover {
+  background: #967349;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(179, 139, 89, 0.3);
+}
+
+/* 🔴 Locked State (Grayed out) */
+.confirm-order-btn.locked {
+  background: #d1d1d1;
+  color: #888;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Order Summary Box within Checkout */
+.order-summary-box-checkout {
+  background: rgba(179, 139, 89, 0.05); /* Very light gold tint */
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border: 1px dashed #b38b59;
+}
+
+.order-summary-box-checkout h3 {
+  font-size: 1.1rem !important;
+  margin-bottom: 15px !important;
+  color: #b38b59 !important;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.free-text {
+  color: #27ae60;
+  font-weight: 700;
+}
+
+.summary-divider {
+  height: 1px;
+  background: #eee;
+  margin: 12px 0;
+}
+
+.total-highlight {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Ensure the button looks consistent */
+.confirm-order-btn.locked {
+  background: #d1d1d1;
+  cursor: not-allowed;
+}
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.order-id-badge {
+  background: #eee;
+  color: #666;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.summary-item-name {
+  font-size: 0.85rem;
+  color: #b38b59;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(179, 139, 89, 0.1);
+}

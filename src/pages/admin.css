@@ -1,0 +1,331 @@
+
+.admin-container {
+  padding: 80px 40px;
+  background-color: #fff9f1; 
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.admin-header h1 {
+  color: #4b3022; 
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+}
+
+
+.admin-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.admin-tabs button {
+  padding: 12px 30px;
+  border: 2px solid #d4a373;
+  background: transparent;
+  color: #d4a373;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.admin-tabs button.active {
+  background: #d4a373;
+  color: white;
+  box-shadow: 0 4px 15px rgba(212, 163, 115, 0.3);
+}
+
+/* Dashboard Card */
+.admin-glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(75, 48, 34, 0.05);
+  border: 1px solid rgba(212, 163, 115, 0.2);
+}
+
+/* Table Styling */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.custom-table th {
+  color: #8d6e63;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 15px;
+}
+
+.custom-table tr {
+  background: white;
+  transition: transform 0.2s;
+}
+
+.custom-table tr:hover {
+  transform: scale(1.01);
+}
+
+.custom-table td {
+  padding: 20px 15px;
+  color: #4b3022;
+  text-align: center;
+}
+
+.custom-table td:first-child { border-radius: 12px 0 0 12px; }
+.custom-table td:last-child { border-radius: 0 12px 12px 0; }
+
+/* Status Pills */
+.status-pill {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pending { background: #fff3e0; color: #ef6c00; }
+.status-baking { background: #e3f2fd; color: #1565c0; }
+.status-delivered { background: #e8f5e9; color: #2e7d32; }
+
+/* Custom Select */
+.admin-select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #d4a373;
+  color: #4b3022;
+  outline: none;
+}
+
+.inventory-dashboard-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.inventory-form-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #d4a373;
+  box-shadow: 0 4px 15px rgba(75, 48, 34, 0.05);
+}
+
+.inventory-form-card h3 {
+  color: #4b3022;
+  margin-bottom: 20px;
+  font-family: 'Playfair Display', serif;
+}
+
+.admin-input-group {
+  margin-bottom: 15px;
+}
+
+.admin-input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #8d6e63;
+  margin-bottom: 5px;
+}
+
+.admin-input-group input, .admin-input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fdfdfd;
+}
+
+.admin-primary-btn {
+  width: 100%;
+  background: #4b3022;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.category-tag {
+  background: #f5ebe0;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+}
+
+.stock-alert.low { color: #d9534f; font-weight: bold; }
+.stock-alert.high { color: #5cb85c; }
+
+.inventory-dashboard-layout {
+  display: flex; 
+  gap: 30px;
+  align-items: start;
+}
+
+.inventory-table-container {
+  flex-grow: 1; 
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.delete-stock-btn {
+  background-color: #f8f1e9;
+  color: #a0522d;
+  border: 1px solid #d4a373;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-stock-btn:hover {
+  background-color: #4b3022;
+  color: #ffffff;
+  border-color: #4b3022;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+.admin-input-group select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b3022' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+  padding-right: 30px;
+}
+
+.payment-actions {
+  display: flex;
+  gap: 8px;
+  text-align: center;
+}
+
+.pay-btn {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #d4a373;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  align-items: center;
+}
+
+.pay-btn.cash {
+  background: #fdf5e6; 
+  color: #4b3022;
+  align-items: center;
+}
+
+.pay-btn.upi {
+  background: #4b3022; 
+  color: #fff;
+  align-items: center;
+}
+
+.pay-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.payment-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.pay-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #d4a373;
+  transition: 0.3s;
+}
+
+.pay-btn.cash {
+  background-color: #fff9f1;
+  color: #4b3022;
+}
+
+.pay-btn.upi {
+  background-color: #4b3022;
+  color: #fff;
+}
+
+.pay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.history-row {
+  opacity: 0.8;
+  background-color: #fafafa;
+}
+
+.status-delivered {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.disabled-btn {
+  opacity: 0.4;
+  cursor: not-allowed !important;
+  filter: grayscale(1);
+}
+
+.status-out-for-delivery {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.pay-btn:disabled:hover {
+  transform: none;
+  background-color: inherit;
+}
+
+
+.disabled-btn {
+  opacity: 0.4;
+  cursor: not-allowed !important;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.empty-msg {
+  text-align: center; 
+  padding: 40px; 
+  font-style: italic;
+  color: #8d6e63;
+}
+
+.product-cell { font-style: italic; }
+.amount-cell { font-weight: bold; color: #2e7d32; }
+
+/* Styling for the Status Pills */
+.status-pill.status-replied {
+  background-color: #d1e7dd; /* Mint Green */
+  color: #0f5132;
+}
+
+.status-pill.status-unreplied {
+  background-color: #f8d7da; /* Soft Pink/Red */
+  color: #842029;
+}

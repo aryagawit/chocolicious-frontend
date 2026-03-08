@@ -1,0 +1,30 @@
+.protected-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff5f5;
+}
+
+.protected-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.protected-card h2 {
+  margin-bottom: 10px;
+  color: #d94b4b;
+}
+
+.protected-card p {
+  color: #666;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

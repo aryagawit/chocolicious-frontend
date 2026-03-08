@@ -1,0 +1,267 @@
+:root{ 
+  --mint: #f7fbf8;
+  --mint-2: #e8f6f0;
+  --gold: #b38b59;
+  --gold-deep: #967349;
+  --pink: #ff7b9c;
+  --muted: #666;
+  --card-bg: #fffdfa;
+}
+
+.setup-container{
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center; padding:48px 20px;
+  background: radial-gradient(circle at 10% 10%, rgba(241,248,243,0.95), rgba(255,255,255,0.98));
+}
+
+.setup-glass-card{
+  width:100%; max-width:620px; padding:40px; border-radius:24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,252,250,0.98));
+  box-shadow: 0 18px 40px rgba(22,32,26,0.06), inset 0 1px 0 rgba(255,255,255,0.7);
+  border:1px solid rgba(179,139,89,0.06);
+  backdrop-filter: blur(6px);
+}
+
+.setup-branding{ text-align:center; margin-bottom:24px }
+
+.brand-font{ font-family:'Dancing Script',cursive; color:var(--gold); font-size:2.6rem; margin:0; text-shadow:0 2px 0 rgba(150,115,73,0.04) }
+
+.tagline{ font-size:0.8rem; text-transform:uppercase; letter-spacing:3px; color:var(--muted); opacity:0.9 }
+
+.setup-header h2{ font-family:'Playfair Display',serif; font-size:1.6rem; color:#333; text-align:center; margin-bottom:6px }
+.setup-header p{ text-align:center; color:var(--muted); font-size:0.95rem; margin-bottom:28px }
+
+.input-group{ margin-bottom:28px }
+.input-group label{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:0.9rem; color:var(--muted); margin-bottom:8px; margin-bottom: 12px;}
+.input-group label span{ color:var(--pink) }
+.input-group label svg {
+  font-size: 1.1rem; /* Icons thode bade karne ke liye */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); /* Subtle depth */
+}
+
+.input-wrapper{ position:relative; display:flex; align-items:center }
+.input-wrapper input, .input-wrapper textarea{
+  width:100%; padding:12px 16px; border-radius:12px; border:1px solid rgba(0,0,0,0.04);
+  background: linear-gradient(180deg, #fff, #fffdf9); font-size:1rem; transition: box-shadow .18s, transform .12s;
+}
+.input-wrapper input:focus, .input-wrapper textarea:focus{
+  outline:none; border-color:var(--gold); box-shadow: 0 10px 26px rgba(155,109,32,0.06); transform:translateY(-1px);
+}
+
+.error-dot{ position:absolute; right:12px; background:var(--pink); color:#fff; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800 }
+.gender-selection {
+  margin-bottom: 30px;
+
+}
+.gender-selection span {
+  color:var(--pink)
+}
+.gender-selection label {
+  display:flex; align-items:center; gap:10px; font-weight:700; font-size:0.9rem; color:var(--muted); margin-bottom:8px; margin-bottom: 12px;
+}
+.input-wrapper input, 
+.input-wrapper textarea,
+.date-input {
+  width: 100%;
+  padding: 14px 18px; /* Thoda extra padding for comfort */
+  border-radius: 12px;
+  /* Existing styles... */
+}
+
+/* Gender pills height adjustment */
+.pill {
+  padding: 16px; /* Consistent with inputs */
+}
+
+.gender-pills{ display:flex; gap:18px }
+.pill{ flex:1; padding:14px; border-radius:12px; text-align:center; cursor:pointer; transition:all .18s; border:1px solid rgba(0,0,0,0.04); background:linear-gradient(180deg,#fff,#fffdf9); color:var(--muted); font-weight:700 }
+.pill:hover{ transform:translateY(-3px); box-shadow:0 10px 20px rgba(22,32,26,0.04) }
+.pill input{ display:none }
+.pill.active{ background: linear-gradient(90deg, var(--pink), #ff9fb3); color:white; border-color:rgba(255,127,156,0.12); box-shadow:0 12px 30px rgba(255,127,156,0.12) }
+
+.form-row{ display:flex; gap:20px }
+.date-input{ width:100%; padding:12px; border-radius:10px; border:1px solid rgba(0,0,0,0.04); color:var(--muted); background:linear-gradient(180deg,#fff,#fffdf9) }
+
+.final-submit-btn{ width:100%; padding:14px; border:none; border-radius:14px; font-weight:800; font-size:1rem; margin-top:22px; transition:all .18s }
+.final-submit-btn.locked{ background:#f3f3f3; color:#cfcfcf; cursor:not-allowed }
+.final-submit-btn.unlocked{ background:linear-gradient(90deg,var(--gold),var(--gold-deep)); color:white; cursor:pointer; box-shadow:0 12px 30px rgba(150,115,73,0.14) }
+.final-submit-btn.unlocked:hover{ transform:translateY(-3px); box-shadow:0 22px 50px rgba(150,115,73,0.12) }
+
+.profile-extra-actions{ margin-top:24px; border-top:1px solid rgba(255,255,255,0.6); padding-top:20px }
+.view-orders-link{ background:none; border:none; color:var(--gold); font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px; margin:0 auto }
+
+.mini-order-item{ background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.9)); margin-top:12px; padding:14px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition: transform .12s, box-shadow .12s }
+.mini-order-item:hover{ transform:translateY(-4px); box-shadow:0 14px 36px rgba(22,32,26,0.06) }
+
+/* Ensure consistent vertical spacing between immediate children inside the card */
+.setup-glass-card > * + * { margin-top: 20px; }
+
+/* small helpers and responsive */
+.muted-small{ color:var(--muted); font-size:0.9rem }
+
+@media (max-width:820px){
+  .setup-glass-card{ padding:22px; border-radius:18px }
+  .form-row{ flex-direction:column }
+  .brand-font{ font-size:2rem }
+}
+
+
+/* Dashboard Grid Structure */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr; /* Form is wider than Sidebar */
+  gap: 30px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Sidebar Specific Styling */
+.orders-sidebar {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(179, 139, 89, 0.1);
+  box-shadow: 0 15px 35px rgba(22, 32, 26, 0.05);
+  max-height: 85vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 40px;
+}
+
+.sidebar-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(179, 139, 89, 0.1);
+  padding-bottom: 15px;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold-deep);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.sidebar-title svg {
+  color: var(--gold);
+  filter: drop-shadow(0 2px 5px rgba(179, 139, 89, 0.2));
+}
+
+.sidebar-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* Order Item Styling */
+.mini-order-item {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.03);
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mini-order-item:hover {
+  transform: translateX(-5px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 20px rgba(179, 139, 89, 0.1);
+}
+
+.order-info-top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.order-info-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.view-link {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.empty-orders {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+}
+
+.shop-now-btn {
+  margin-top: 15px;
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Custom Scrollbar for Sidebar */
+.orders-sidebar::-webkit-scrollbar { width: 5px; }
+.orders-sidebar::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 10px; }
+
+/* Responsive View */
+@media (max-width: 950px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+  }
+  .orders-sidebar {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media print {
+  /* Hide everything on the page */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Target only the order confirmation card and its specific children */
+  /* Replace .order-success-card with your actual card class name */
+  .order-success-card, 
+  .order-success-card *,
+  .setup-branding, 
+  .setup-branding * {
+    visibility: visible;
+  }
+
+  /* Position the content at the top of the printed page */
+  .order-success-card {
+    position: absolute;
+    left: 0;
+    top: 100px; /* Space for the logo */
+    width: 100%;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .setup-branding {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Hide buttons like 'Print Receipt' or 'Back to Home' in the printout */
+  .print-btn, .back-home-btn, .view-orders-link {
+    display: none !important;
+  }
+}
