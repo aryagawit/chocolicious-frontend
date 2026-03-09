@@ -50,10 +50,13 @@ export default function Login() {
       if (data.success) {
         if (isLogin) {
           // Login Success Logic
-          login(data.user); 
+           
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("isAdmin", data.user.is_admin ? "true" : "false");
+
+          login(data.user);
+          
           alert("Login Successful!");
 
           if (data.user.is_admin === 1 || data.user.is_admin === true) {
