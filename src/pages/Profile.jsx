@@ -173,7 +173,7 @@ const navigateToReceipt = (order) => {
           </div>
 
           <div className="input-group">
-            <label><FaEnvelope style={{ color: "#8fbaff" }} /> Phone Number <span>*</span></label>
+            <label><FaPhone style={{ color: "#2e333b" }} /> Phone Number <span>*</span></label>
             <div className="input-wrapper">
               <input 
                 type="tel" 
@@ -185,7 +185,7 @@ const navigateToReceipt = (order) => {
           </div>
 
           <div className="input-group">
-            <label><FaPhone style={{ color: "#8fbaff" }} /> Email Address (Optional)</label>
+            <label><FaEnvelope style={{ color: "#8fbaff" }} /> Email Address (Optional)</label>
             <div className="input-wrapper">
               <input 
                 type="email" 
