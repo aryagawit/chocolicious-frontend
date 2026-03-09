@@ -18,31 +18,36 @@ export default function AdminDashboard() {
   }, []);
 
 const fetchData = async () => {
-  // 1. Get the token
   const token = localStorage.getItem("token"); 
 
-  // 2. Debugging: Check if token exists in your browser
   if (!token) {
     console.error("Token missing from localStorage!");
     return;
   }
-
+  
   try {
+    // 1. Fetch Orders
     const orderRes = await fetch(`${baseURL}/api/admin/orders`, {
       headers: { 
-        "Authorization": `Bearer ${token}`, // MUST match this format
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
       }
     });
 
-    // 2. Fetch Inventory (Matches server.js: app.get("/api/admin/inventory"...))
+    const orderData = await orderRes.json();
+    console.log("RAW ORDER DATA FROM SERVER:", orderData);
+
+    // FIX: Extract the array and update the state
+    const actualOrders = Array.isArray(orderData) ? orderData : (orderData.orders || []);
+    setOrders(actualOrders); 
+
+    // 2. Fetch Inventory
     const invRes = await fetch(`${baseURL}/api/admin/inventory`, {
       headers: { "Authorization": `Bearer ${token}` } 
     });
     
     const invData = await invRes.json();
-    // Setting the inventory state
-    setInventory(Array.isArray(invData) ? invData : []);
+    setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
 
   } catch (err) {
     console.error("Error fetching admin data:", err);
