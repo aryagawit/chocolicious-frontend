@@ -33,10 +33,10 @@ export default function Signup() {
         <div className="form-panel">
           <form className="form-content" onSubmit={handleSignup}>
             <h1>Create Account</h1>
-            <input type="text" placeholder="Full Name" onChange={(e)=>setFormData({...formData, name: e.target.value})} required />
-            <input type="email" placeholder="Email" onChange={(e)=>setFormData({...formData, email: e.target.value})} required />
-            <input type="tel" placeholder="Phone (Optional)" onChange={(e)=>setFormData({...formData, phone: e.target.value})} />
-            <input type="password" placeholder="Password" onChange={(e)=>setFormData({...formData, password: e.target.value})} required />
+            <input type="text" placeholder="Full Name" onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+            <input type="email" placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+            <input type="tel" placeholder="Phone (Optional)" onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+            <input type="password" placeholder="Password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
             <button type="submit" className="submit-btn active-unlocked">SIGN UP</button>
             <p>Already have an account? <Link to="/login">Login here</Link></p>
           </form>

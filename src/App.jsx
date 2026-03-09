@@ -12,7 +12,7 @@ import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Receipt from "./pages/Receipt"
-
+import Signup from "./pages/Signup";
 import { Navigate, Outlet } from "react-router-dom";
 import AdminDashboard from "./pages/AdminDashboard"; // Adjust path if needed
 //import InventoryManager from "./pages/InventoryManager"; // Adjust path if needed
@@ -42,6 +42,7 @@ function App() {
           <Route path="/Profile" element={<Profile />} />
           <Route path="/checkout" element={  <Checkout /> }/>
           <Route path="/receipt/:id" element={<Receipt />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
       </Router>
