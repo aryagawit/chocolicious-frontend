@@ -1,15 +1,28 @@
+/* login.css - Master Styles for Chocolicious Login & Signup */
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+
+/* GLOBAL SETTINGS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .login-viewport {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #fdfaf7;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 
 .login-card {
   width: 1000px;
-  height: 600px;
+  min-height: 600px;
   background: white;
   border-radius: 30px;
   display: flex;
@@ -17,24 +30,24 @@
   box-shadow: 0 25px 50px rgba(179, 139, 89, 0.15);
 }
 
-/* BRAND PANEL STYLING */
+/* BRAND PANEL (LEFT SIDE) */
 .brand-panel {
   flex: 1;
-  background-color: #fcf1f3; /* Soft Pink */
+  background-color: #fcf1f3; /* Your Preferred Soft Pink */
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 40px;
 }
 
 .brand-inner {
   text-align: center;
   z-index: 5;
-  padding: 40px;
- width: 960px;
-    max-width: 96%;
+  width: 100%;
 }
+
 .floating-logo {
   width: 160px;
   margin-bottom: 25px;
@@ -43,25 +56,26 @@
 }
 
 .serif-title {
- font-family: 'Dancing Script', cursive;
+  font-family: 'Dancing Script', cursive;
   color: #7d613f;
-  font-size:80px;
+  font-size: 80px;
   margin-bottom: 10px;
 }
 
 .brand-subtitle {
   color: #8a7060;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.5;
 }
 
-/* FORM PANEL STYLING */
+/* FORM PANEL (RIGHT SIDE) */
 .form-panel {
   flex: 1.2;
   display: flex;
   align-items: center;
   justify-content: center;
   background: white;
+  padding: 50px;
 }
 
 .form-content {
@@ -70,16 +84,19 @@
 }
 
 .welcome-text h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #9f887b;
   margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
 }
 
 .welcome-text p {
   color: #999;
   margin-bottom: 35px;
+  font-size: 0.95rem;
 }
 
+/* INPUT GROUPS */
 .input-group {
   margin-bottom: 25px;
 }
@@ -101,7 +118,7 @@
 }
 
 .modern-input:focus-within, .captcha-flex:focus-within {
-  border-color: #ff7b9c;
+  border-color: #ff7b9c; /* Brand Pink Highlight */
 }
 
 .modern-input input, .captcha-flex input {
@@ -110,14 +127,11 @@
   padding: 12px;
   width: 100%;
   font-size: 1.05rem;
+  background: transparent;
+  color: #4a3728;
 }
 
-.prefix {
-  padding: 12px 10px;
-  color: #b38b59;
-  font-weight: bold;
-}
-
+/* CAPTCHA SECTION */
 .captcha-display {
   background: #fdfaf7;
   padding: 5px 15px;
@@ -125,7 +139,6 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 5px;
 }
 
 .captcha-code {
@@ -135,46 +148,84 @@
   color: #b38b59;
 }
 
-/* Base state: Grey and unclickable */
+.captcha-display button {
+  background: none;
+  border: none;
+  color: #b38b59;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* BUTTON STATES */
+
+/* Base: Grey and Locked */
 .submit-btn {
   width: 100%;
   padding: 16px;
   border: none;
   border-radius: 40px;
-  background: #e0e0e0; /* Dull grey */
-  color: #a0a0a0;
   font-weight: bold;
-  cursor: not-allowed;
+  font-size: 1rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Active state: Pops into your brand pink */
-.submit-btn.ready {
-  background: #ff7b9c; /* Brand Pink */
-  color: white;
+.submit-btn.locked-state {
+  background-color: #e8e8e8 !important;
+  color: #b0b0b0 !important;
+  cursor: not-allowed;
+  pointer-events: none;
+  border: 1px solid #dcdcdc;
+}
+
+/* Active: Ready to Click */
+.submit-btn.active-unlocked {
+  background-color: #ff7b9c !important; /* Brand Pink */
+  color: white !important;
   cursor: pointer;
+  pointer-events: auto;
   box-shadow: 0 8px 15px rgba(255, 123, 156, 0.3);
-  transform: scale(1.02);
 }
 
-.submit-btn.ready:hover {
-  background: #e06a88;
+.submit-btn.active-unlocked:hover {
+  background-color: #e06a88 !important;
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 12px 20px rgba(255, 123, 156, 0.4);
-  transform: translateY(-2px) scale(1.03);
 }
 
-/* Optional: Red highlight if the checkbox is missed but others are filled */
-.terms-row label {
+/* TOGGLE & TERMS */
+.terms-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
   font-size: 0.85rem;
   color: #666;
+}
+
+.link-text {
+  color: #b38b59;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-.terms-row input:focus + label {
-  color: #ff7b9c;
+.toggle-auth {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.9rem;
 }
 
-/* Animations */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #ff7b9c;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+/* ANIMATIONS */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-15px); }
@@ -190,420 +241,30 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Responsiveness */
+/* MOBILE RESPONSIVENESS */
 @media (max-width: 850px) {
-  .login-card { height: auto; flex-direction: column; width: 100%; }
-  .brand-panel { padding: 40px 0; }
-  .form-panel { padding: 40px 20px; }
-}
-
-/* The 'Locked' Button - Grey, No Hover, No Click */
-.submit-btn.locked-state {
-  background-color: #e8e8e8 !important; /* Force grey */
-  color: #b0b0b0 !important;
-  cursor: not-allowed;
-  pointer-events: none; /* This prevents ANY mouse interaction */
-  border: 1px solid #dcdcdc;
-  box-shadow: none;
-  transform: none;
-}
-
-/* The 'Unlocked' Button - Pops into color only when ready */
-.submit-btn.active-unlocked {
-  background-color: #d4e7d7 !important; /* Your brand green/mint */
-  color: #5a7d61 !important;
-  cursor: pointer;
-  pointer-events: auto; /* Re-enable interaction */
-  border: 1px solid #b8d8be;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
-
-.submit-btn.active-unlocked:hover {
-  background-color: #c5dec9 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
-}
-
-/* Make the checkbox and label more interactive */
-.terms-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-  font-size: 0.9rem;
-}
-
-.link-text {
-  color: #b38b59;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* Step 2 Specifics */
-.back-btn-minimal {
-  background: none;
-  border: none;
-  color: #b38b59; /* Brand Tan */
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 30px;
-  padding: 0;
-  transition: 0.3s;
-}
-
-.back-btn-minimal:hover {
-  color: #ff7b9c;
-  transform: translateX(-5px);
-}
-
-.highlight-phone {
-  color: #333;
-  font-weight: 700;
-}
-
-.otp-input-wrapper {
-  margin: 20px 0 40px 0;
-}
-
-.otp-styled-input {
-  width: 100%;
-  border: none;
-  border-bottom: 2px solid #eee;
-  padding: 15px;
-  font-size: 2rem;
-  text-align: center;
-  letter-spacing: 12px;
-  color: #b38b59;
-  background: transparent;
-  transition: 0.3s;
-}
-
-.otp-styled-input:focus {
-  outline: none;
-  border-color: #ff7b9c; /* Brand Pink */
-  background: #fffcfd;
-}
-
-.resend-container {
-  margin-top: 25px;
-  text-align: center;
-}
-
-.resend-container p {
-  font-size: 0.85rem;
-  color: #999;
-  margin-bottom: 5px;
-}
-
-.resend-link {
-  background: none;
-  border: none;
-  color: #ff7b9c;
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.resend-link:hover {
-  color: #e06a88;
-}
-
-.resend-text {
-  margin-top: 15px;
-  font-size: 0.85rem;
-  color: #8d6e63;
-}
-
-.resend-link {
-  background: none;
-  border: none;
-  color: #f06292;
-  text-decoration: underline;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* Adjust Toastify font to match your bakery */
-.Toastify__toast {
-  border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* ===== LOGIN/SIGNUP RESPONSIVE FIXES ===== */
-
-@media (max-width: 1024px) {
   .login-card {
-    width: 95%; /* Use percentage instead of 1000px */
-    height: auto; /* Allow height to grow with content */
-    max-width: 900px;
-  }
-}
-
-@media (max-width: 768px) {
-  .login-viewport {
-    height: auto; /* Allow scrolling on small phones */
-    min-height: 100vh;
-    padding: 10px;
-  }
-
-  .login-card {
-    flex-direction: column; /* Brand panel on top, Form on bottom */
-    width: 100%;
+    width: 95%;
+    height: auto;
+    flex-direction: column;
     border-radius: 20px;
   }
-
-  /* Brand Panel Adjustments */
+  
   .brand-panel {
     padding: 40px 20px;
-    flex: none; /* Stop it from trying to grow */
+    order: 1;
   }
-
+  
   .serif-title {
-    font-size: 50px; /* Scale down from 80px */
+    font-size: 50px;
   }
-
+  
   .floating-logo {
-    width: 100px; /* Smaller logo for mobile */
+    width: 100px;
   }
-
-  .brand-inner {
-    padding: 0;
-    width: 100%;
-  }
-
-  /* Form Panel Adjustments */
+  
   .form-panel {
     padding: 40px 20px;
-    flex: none;
-  }
-
-  .form-content {
-    max-width: 100%; /* Use full available width */
-  }
-
-  .welcome-text h1 {
-    font-size: 1.6rem;
-  }
-
-  /* OTP Input Fix */
-  .otp-styled-input {
-    font-size: 1.5rem;
-    letter-spacing: 5px; /* Reduce spacing so it doesn't overflow */
-  }
-
-  /* Input Labels Fix */
-  .form-group label {
-    font-size: 0.8rem;
-  }
-}
-
-/* Global Safety */
-* {
-  box-sizing: border-box;
-}
-
-.login-viewport {
-  overflow-x: hidden;
-}
-
-/* login.css - Shared Styles for Login & Signup */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap');
-
-.login-viewport {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fdf8f5; /* Light creamy background */
-  padding: 20px;
-  font-family: 'Poppins', sans-serif;
-}
-
-.login-card {
-  display: flex;
-  width: 100%;
-  max-width: 900px;
-  background: #ffffff;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(179, 139, 89, 0.1);
-}
-
-/* Brand Panel (Left Side) */
-.brand-panel {
-  flex: 1;
-  background: #b38b59; /* Your signature chocolate/gold color */
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  text-align: center;
-}
-
-.floating-logo {
-  width: 120px;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-}
-
-.serif-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-/* Form Panel (Right Side) */
-.form-panel {
-  flex: 1.2;
-  padding: 50px;
-  background: white;
-}
-
-.form-content h1 {
-  font-size: 2rem;
-  color: #4a3728;
-  margin-bottom: 30px;
-  font-weight: 600;
-}
-
-/* Input Styling */
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 0.85rem;
-  color: #8d7765;
-  margin-bottom: 8px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.modern-input {
-  display: flex;
-  align-items: center;
-  background: #f9f5f0;
-  border: 1.5px solid #eeebe6;
-  border-radius: 12px;
-  padding: 12px 15px;
-  transition: all 0.3s ease;
-}
-
-.modern-input:focus-within {
-  border-color: #b38b59;
-  background: #fff;
-}
-
-.modern-input input {
-  border: none;
-  background: transparent;
-  width: 100%;
-  outline: none;
-  font-size: 1rem;
-  color: #4a3728;
-}
-
-/* Captcha Styling */
-.captcha-flex {
-  display: flex;
-  gap: 10px;
-}
-
-.captcha-display {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #4a3728;
-  color: white;
-  padding: 5px 15px;
-  border-radius: 12px;
-}
-
-.captcha-code {
-  font-weight: bold;
-  letter-spacing: 2px;
-  font-family: monospace;
-}
-
-.captcha-display button {
-  background: transparent;
-  border: none;
-  color: #d4a373;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-/* Terms & Toggle */
-.terms-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-  font-size: 0.85rem;
-  color: #8d7765;
-}
-
-.toggle-auth {
-  text-align: center;
-  margin-top: 25px;
-  font-size: 0.9rem;
-}
-
-.toggle-btn {
-  background: none;
-  border: none;
-  color: #b38b59;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-/* Submit Button */
-.submit-btn {
-  width: 100%;
-  padding: 15px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.locked-state {
-  background: #eeebe6;
-  color: #bcaaa4;
-  cursor: not-allowed;
-}
-
-.active-unlocked {
-  background: #b38b59;
-  color: white;
-  box-shadow: 0 5px 15px rgba(179, 139, 89, 0.3);
-}
-
-.active-unlocked:hover {
-  background: #8d6e63;
-  transform: translateY(-2px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .login-card {
-    flex-direction: column;
-  }
-  .brand-panel {
-    padding: 30px;
+    order: 2;
   }
 }

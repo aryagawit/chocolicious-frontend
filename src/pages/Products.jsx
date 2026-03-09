@@ -94,7 +94,12 @@ function ProductCard({ p, isAdmin, handleAddToCart, addedItems, activeSidebarSiz
             <option value="Large">Large (1.5kg+)</option>
           </select>
         ) : (
-          <span className="badge size-badge">Standard</span>
+          <span className="badge size-badge" style={{background: '#fdf8f5', 
+            color: '#b38b59', 
+            fontSize: '0.75rem',
+            padding: '4px 10px',
+            border: '1px solid #b38b59',
+            borderRadius: '4px'}}>Standard</span>
         )}
       </div>
 
@@ -111,26 +116,35 @@ function ProductCard({ p, isAdmin, handleAddToCart, addedItems, activeSidebarSiz
           {addedItems[p.id] ? "Added to Cart" : "Add to Cart"}
         </button>
       ) : (
-        <div className="admin-badge-view">CATALOG VIEW ONLY</div>
+        <div className="admin-badge-view" style={{marginTop: '10px',
+            padding: '8px',
+            background: '#f9f5f0',
+            color: '#d4a373',
+            border: '1px solid #d4a373',
+            borderRadius: '4px',
+            fontSize: '0.8rem',
+            fontWeight: 'bold'}}>CATALOG VIEW ONLY</div>
       )}
     </div>
   );
 }
 
 export default function Products() {
-  const { addToCart } = useContext(CartContext);
+const { addToCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [eggFilter, setEggFilter] = useState(null);
   const [category, setCategory] = useState(null);
   const [sizeFilter, setSizeFilter] = useState(null);
-  const [minPrice, setMinPrice] = useState(100);
-  const [maxPrice, setMaxPrice] = useState(7500);
+  const PRICE_MIN = 100;
+  const PRICE_MAX = 7500;
+  const [minPrice, setMinPrice] = useState(PRICE_MIN);
+  const [maxPrice, setMaxPrice] = useState(PRICE_MAX);
   const [addedItems, setAddedItems] = useState({});
   const location = useLocation();
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const baseURL = "https://chocolicious-api.onrender.com";
 
@@ -160,11 +174,22 @@ export default function Products() {
   const filteredItems = products.filter((p) => {
     const matchEgg = eggFilter ? p.type === eggFilter : true;
     const matchCategory = category ? p.category === category : true;
+    const isCakery = p.category?.toLowerCase() === 'cakes' || p.category?.toLowerCase() === 'cheesecakes';
+  const matchSize = sizeFilter 
+    ? (sizeFilter === "Small" ? true : isCakery) 
+    : true;
     const price = parseFloat(p.price);
-    const matchPrice = price >= minPrice && price <= maxPrice;
-    const matchName = searchQuery ? p.name?.toLowerCase().includes(searchQuery.toLowerCase()) : true;
-    return matchEgg && matchCategory && matchPrice && matchName;
+    const minP = minPrice !== "" && minPrice != null ? parseFloat(minPrice) : PRICE_MIN;
+    const maxP = maxPrice !== "" && maxPrice != null ? parseFloat(maxPrice) : Infinity;
+    const matchPrice = price >= minP && price <= maxP;
+    const matchName = searchQuery ? p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+    return matchEgg && matchCategory && matchSize && matchPrice && matchName;
   });
+
+let displayedItems = filteredItems;
+  if (category) {
+    displayedItems = [...filteredItems].sort((a, b) => (a.category === category ? 0 : 1) - (b.category === category ? 0 : 1));
+  }
 
   const handleAddToCart = async (p) => {
     if (isAdmin) return; 
@@ -208,7 +233,7 @@ export default function Products() {
 
   if (loading) return <div className="loading-state">Baking your treats... 🧁</div>;
 
-  return (
+   return (
     <>
       <section className="products-hero">
         <h2 className="products-title">OUR PRODUCTS</h2>
@@ -219,18 +244,55 @@ export default function Products() {
       <div className="products-page">
         <aside className="sidebar">
           <h3>FILTERS</h3>
-          {/* Diet Filters */}
           <h4>DIET</h4>
-          <label><input type="checkbox" checked={eggFilter === "egg"} onChange={() => setEggFilter(eggFilter === "egg" ? null : "egg")} /> Egg</label>
-          <label><input type="checkbox" checked={eggFilter === "eggless"} onChange={() => setEggFilter(eggFilter === "eggless" ? null : "eggless")} /> Eggless</label>
+          <label>
+            <input type="checkbox" checked={eggFilter === "egg"} onChange={() => setEggFilter(eggFilter === "egg" ? null : "egg")} />
+            <span className="checkmark" /> Egg
+          </label>
+          <label>
+            <input type="checkbox" checked={eggFilter === "eggless"} onChange={() => setEggFilter(eggFilter === "eggless" ? null : "eggless")} />
+            <span className="checkmark" /> Eggless
+          </label>
 
-          {/* Size Filters */}
           <h4>SIZE</h4>
-          <label><input type="checkbox" checked={sizeFilter === "Small"} onChange={() => setSizeFilter(sizeFilter === "Small" ? null : "Small")} /> Small / 500g</label>
-          <label><input type="checkbox" checked={sizeFilter === "Medium"} onChange={() => setSizeFilter(sizeFilter === "Medium" ? null : "Medium")} /> Medium / 1kg</label>
-          <label><input type="checkbox" checked={sizeFilter === "Large"} onChange={() => setSizeFilter(sizeFilter === "Large" ? null : "Large")} /> Large / 1.5kg+</label>
+          <label>
+            <input type="checkbox" checked={sizeFilter === "Small"} onChange={() => setSizeFilter(sizeFilter === "Small" ? null : "Small")} />
+            <span className="checkmark" /> Small / 500g
+          </label>
+          <label>
+            <input type="checkbox" checked={sizeFilter === "Medium"} onChange={() => setSizeFilter(sizeFilter === "Medium" ? null : "Medium")} />
+            <span className="checkmark" /> Medium / 1kg
+          </label>
+          <label>
+            <input type="checkbox" checked={sizeFilter === "Large"} onChange={() => setSizeFilter(sizeFilter === "Large" ? null : "Large")} />
+            <span className="checkmark" /> Large / 1.5kg+
+          </label>
 
-          {/* Categories */}
+          <h4>PRICE RANGE</h4>
+          <div className="price-slider">
+            <div className="price-scale">
+              <span>₹{PRICE_MIN}</span>
+              <span>₹{PRICE_MAX}+</span>
+            </div>
+            <div className="slider-wrapper dual-slider" style={{
+                ['--minPos']: `${((minPrice - PRICE_MIN) / (PRICE_MAX - PRICE_MIN)) * 100}%`,
+                ['--maxPos']: `${((maxPrice - PRICE_MIN) / (PRICE_MAX - PRICE_MIN)) * 100}%`
+            }}>
+              <input type="range" min={PRICE_MIN} max={PRICE_MAX} step={50} value={minPrice} onChange={(e) => setMinPrice(Math.min(Number(e.target.value), Number(maxPrice) - 50))} className="range-input range-min" />
+              <input type="range" min={PRICE_MIN} max={PRICE_MAX} step={50} value={maxPrice} onChange={(e) => setMaxPrice(Math.max(Number(e.target.value), Number(minPrice) + 50))} className="range-input range-max" />
+            </div>
+            <div className="price-boxes">
+              <div className="price-box">
+                <div className="box-label">Minimum</div>
+                <input type="number" className="price-input" value={minPrice} onChange={(e) => setMinPrice(Math.max(PRICE_MIN, Math.min(Number(e.target.value), maxPrice - 50)))} />
+              </div>
+              <div className="price-box">
+                <div className="box-label">Maximum</div>
+                <input type="number" className="price-input" value={maxPrice} onChange={(e) => setMaxPrice(Math.min(PRICE_MAX, Math.max(Number(e.target.value), minPrice + 50)))} />
+              </div>
+            </div>
+          </div>
+
           <h4>CATEGORIES</h4>
           <ul className="category-list">
             {Object.keys(descriptions).map(cat => (
@@ -250,10 +312,10 @@ export default function Products() {
             </div>
           )}
 
-          {filteredItems.length === 0 ? (
+          {displayedItems.length === 0 ? (
             <p className="no-products">No yummy treats found! Try changing your filters.</p>
           ) : (
-            filteredItems.map((p) => (
+            displayedItems.map((p) => (
               <ProductCard 
                 key={p.id} 
                 p={p} 
@@ -266,8 +328,7 @@ export default function Products() {
           )}
         </main>
       </div>
-      
-      {/* Footer and Query Section remain identical */}
+
       <section className="queries-orders-section">
         <h2 className="queries-header">For Queries & Orders</h2>
         <p>Please contact us with your queries or to discuss your requirements.</p>
@@ -281,14 +342,23 @@ export default function Products() {
               <img src={finallogo} alt="Chocolicious" className="footer-logo" />
               <h3 className="footer-name">Chocolicious</h3>
             </div>
+            <div className="footer-links">
+              <Link to="/about">OUR STORY</Link>
+              <Link to="/products">OUR PRODUCTS</Link>
+              <a href="#">PRIVACY POLICY</a>
+            </div>
           </div>
           <div className="footer-center">
             <p><strong>Registered address:</strong></p>
             <p>GROUND FLOOR, Bhiwandi, Thane, Maharashtra, 400701</p>
             <div className="social-icons">
-              <a href="https://instagram.com/chocolicious_official._" target="_blank" className="social-box"><FaInstagram /></a>
-              <a href="https://wa.me/917770085050" target="_blank" className="social-box"><FaWhatsapp /></a>
+              <a href="https://instagram.com/chocolicious_official._" target="_blank" rel="noopener noreferrer" className="social-box"><FaInstagram /></a>
+              <a href="https://wa.me/917770085050" target="_blank" rel="noopener noreferrer" className="social-box"><FaWhatsapp /></a>
             </div>
+          </div>
+          <div className="footer-right">
+            <h4>Contact Us</h4>
+            <p>📞 +91 77700 85050</p>
           </div>
         </div>
       </footer>
