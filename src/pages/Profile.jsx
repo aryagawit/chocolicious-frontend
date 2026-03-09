@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { FaUser,FaReceipt, FaEnvelope, FaVenusMars, FaBirthdayCake, FaGift, FaMapMarkerAlt } from "react-icons/fa";
+import { FaUser,FaReceipt, FaEnvelope, FaVenusMars, FaBirthdayCake, FaGift, FaMapMarkerAlt , FaPhone} from "react-icons/fa";
 import './profile.css';
 
 export default function ProfileSetup() {
@@ -13,6 +13,7 @@ export default function ProfileSetup() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phone:"",
     gender: "",
     dob: "",
     anniversary: "",
@@ -36,6 +37,7 @@ export default function ProfileSetup() {
         setFormData({
           fullName: data.user.name || "",
           email: data.user.email || "",
+          phone: data.user.phone || "",
           gender: data.user.gender || "",
           dob: data.user.dob ? data.user.dob.split('T')[0] : "",
           anniversary: data.user.anniversary ? data.user.anniversary.split('T')[0] : "",
@@ -81,6 +83,7 @@ export default function ProfileSetup() {
     const payload = {
       name: formData.fullName,
       email: formData.email,
+      phone:formData.phone,
       gender: formData.gender,
       dob: formData.dob,
       anniversary: formData.anniversary,
@@ -170,7 +173,19 @@ const navigateToReceipt = (order) => {
           </div>
 
           <div className="input-group">
-            <label><FaEnvelope style={{ color: "#8fbaff" }} /> Email Address (Optional)</label>
+            <label><FaEnvelope style={{ color: "#8fbaff" }} /> Phone Number <span>*</span></label>
+            <div className="input-wrapper">
+              <input 
+                type="tel" 
+                placeholder="Ex: 9876543210" 
+                value={formData.phone} 
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label><FaPhone style={{ color: "#8fbaff" }} /> Email Address (Optional)</label>
             <div className="input-wrapper">
               <input 
                 type="email" 
