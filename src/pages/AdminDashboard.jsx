@@ -37,22 +37,34 @@ const fetchData = async () => {
     const orderData = await orderRes.json();
     console.log("RAW ORDER DATA FROM SERVER:", orderData);
 
-    // FIX: Extract the array and update the state
-    const actualOrders = Array.isArray(orderData) ? orderData : (orderData.orders || []);
+    // FIX: Handles data if it's a plain array OR inside { success: true, orders: [] }
+    const actualOrders = Array.isArray(orderData) 
+      ? orderData 
+      : (orderData.orders || orderData.data || []);
+    
     setOrders(actualOrders); 
 
     // 2. Fetch Inventory
     const invRes = await fetch(`${baseURL}/api/admin/inventory`, {
-      headers: { "Authorization": `Bearer ${token}` } 
+      headers: { 
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      } 
     });
     
     const invData = await invRes.json();
-    setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
+    console.log("RAW INVENTORY DATA:", invData);
+
+    // FIX: Handles inventory array wrapping
+    const actualInventory = Array.isArray(invData) 
+      ? invData 
+      : (invData.inventory || invData.data || []);
+      
+    setInventory(actualInventory);
 
   } catch (err) {
     console.error("Error fetching admin data:", err);
-    setOrders([]); 
-    setInventory([]);
+    // REMOVED: setOrders([]) - Keeping old data on error prevents the "Blank Screen" flash
   }
 };
 
@@ -74,26 +86,33 @@ const fetchData = async () => {
     }
   };
 
-  const markAsPaid = async (orderId, mode) => {
-    const token = localStorage.getItem("token");
-    try {
-      const res = await fetch(`${baseURL}/api/admin/payments/confirm`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          order_id: orderId, 
-          payment_mode: mode, 
-          payment_status: "Completed" 
-        }),
-      });
-      if (res.ok) {
-        alert(`Order #${orderId} marked as Paid via ${mode}! 🍫`);
-        fetchData(); 
-      }
-    } catch (err) {
-      console.error("Payment error:", err);
+ const markAsPaid = async (orderId, mode) => {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await fetch(`${baseURL}/api/admin/payments/confirm`, {
+      method: "POST",
+      headers: { 
+        "Authorization": `Bearer ${token}`, 
+        "Content-Type": "application/json" 
+      },
+      body: JSON.stringify({ 
+        order_id: orderId, 
+        payment_mode: mode, 
+        payment_status: "Completed" // This MUST match the string in your filter
+      }),
+    });
+
+    if (res.ok) {
+      alert(`Order #${orderId} marked as Paid via ${mode}! 🍫`);
+      await fetchData(); // Refresh everything
+    } else {
+      const errorData = await res.json();
+      console.error("Payment update failed:", errorData.message);
     }
-  };
+  } catch (err) {
+    console.error("Payment error:", err);
+  }
+};
 
   const handleAddInventory = async (e) => {
     e.preventDefault();
@@ -134,6 +153,9 @@ const fetchData = async () => {
     }
   };
 
+console.log("Active count:", orders.filter(o => (o.payment_status || "").toLowerCase() !== "completed").length);
+console.log("History count:", orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length);
+
   return (
     <div className="admin-container">
       <header className="admin-header">
@@ -162,79 +184,75 @@ const fetchData = async () => {
                 <th>Payment Mode</th>
               </tr>
             </thead>
-            <tbody>
-              {orders.filter(o => {
-                // We want orders that are NOT completed AND have a pending-style status
-                const pStatus = (o.payment_status || "").toLowerCase();
-                const oStatus = (o.order_status || "").toLowerCase();
-                
-                // Show it if payment isn't done AND it hasn't been delivered yet
-                return pStatus !== "completed" && oStatus !== "completed";
-              }).length > 0 ? (
-                orders
-                  .filter(o => {
-                    const pStatus = (o.payment_status || "").toLowerCase();
-                    return pStatus !== "completed";
-                  })
-                  .map((order) => {
-                    const isDelivered = order.order_status?.toLowerCase() === "delivered";
-                    return (
-                      <tr key={order.order_id}>
-                        <td>
-                          <strong>ID: {order.customer_id}</strong><br/>
-                          <small>📞 {order.phone || "N/A"}</small>
-                        </td>
-                        <td className="product-cell">{order.product_name}</td>
-                        <td className="amount-cell">₹{order.price}</td>
-                        <td>
-                          <span className={`status-pill status-${(order.order_status || "pending").toLowerCase().replace(/\s+/g, '-')}`}>
-                            {order.order_status}
-                          </span>
-                        </td>
-                        <td>
-                          <select 
-                            className="admin-select"
-                            value={order.order_status} 
-                            onChange={(e) => updateStatus(order.order_id, e.target.value)}
-                          >
-                            <option value="Pending">Pending</option>
-                            <option value="Accepted">Accepted</option>
-                            <option value="Baking">Baking</option>
-                            <option value="Out for Delivery">Out for Delivery</option>
-                            <option value="Delivered">Delivered</option>
-                          </select>
-                        </td>
-                        <td>
-                          <div className="payment-actions">
-                            <button 
-                              disabled={!isDelivered}
-                              onClick={() => {
-                                if(window.confirm(`Mark ₹${order.price} as paid via Cash?`)) 
-                                  markAsPaid(order.order_id, "Cash");
-                              }} 
-                              className={`pay-btn cash ${!isDelivered ? 'disabled-btn' : ''}`}
-                            >
-                              Cash
-                            </button>
-                            <button 
-                              disabled={!isDelivered}
-                              onClick={() => {
-                                const upiId = window.prompt(`Order Amount: ₹${order.price}\nEnter UPI ID:`, "customer@upi");
-                                if(upiId) markAsPaid(order.order_id, `UPI (${upiId})`);
-                              }} 
-                              className={`pay-btn upi ${!isDelivered ? 'disabled-btn' : ''}`}
-                            >
-                              UPI
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-              ) : (
-                <tr><td colSpan="6" className="empty-msg">No active orders! 🧁</td></tr>
-              )}
-            </tbody>
+            {/* Replace your existing <tbody> content with this */}
+<tbody>
+  {orders.filter(o => {
+    // Logic: If payment is NOT 'completed', it belongs in Active Orders.
+    // This ensures even 'Delivered' orders stay here until they are PAID.
+    const pStatus = (o.payment_status || "").toLowerCase();
+    return pStatus !== "completed";
+  }).length > 0 ? (
+    orders
+      .filter(o => (o.payment_status || "").toLowerCase() !== "completed")
+      .map((order) => {
+        const isDelivered = (order.order_status || "").toLowerCase() === "delivered";
+        return (
+          <tr key={order.order_id}>
+            <td>
+              <strong>ID: {order.customer_id}</strong><br/>
+              <small>📞 {order.phone || "N/A"}</small>
+            </td>
+            <td className="product-cell">{order.product_name}</td>
+            <td className="amount-cell">₹{order.price}</td>
+            <td>
+              <span className={`status-pill status-${(order.order_status || "pending").toLowerCase().replace(/\s+/g, '-')}`}>
+                {order.order_status}
+              </span>
+            </td>
+            <td>
+              <select 
+                className="admin-select"
+                value={order.order_status} 
+                onChange={(e) => updateStatus(order.order_id, e.target.value)}
+              >
+                <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Baking">Baking</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </td>
+            <td>
+              <div className="payment-actions">
+                <button 
+                  disabled={!isDelivered}
+                  onClick={() => {
+                    if(window.confirm(`Mark ₹${order.price} as paid via Cash?`)) 
+                      markAsPaid(order.order_id, "Cash");
+                  }} 
+                  className={`pay-btn cash ${!isDelivered ? 'disabled-btn' : ''}`}
+                >
+                  Cash
+                </button>
+                <button 
+                  disabled={!isDelivered}
+                  onClick={() => {
+                    const upiId = window.prompt(`Order Amount: ₹${order.price}\nEnter UPI ID:`, "customer@upi");
+                    if(upiId) markAsPaid(order.order_id, `UPI (${upiId})`);
+                  }} 
+                  className={`pay-btn upi ${!isDelivered ? 'disabled-btn' : ''}`}
+                >
+                  UPI
+                </button>
+              </div>
+            </td>
+          </tr>
+        );
+      })
+  ) : (
+    <tr><td colSpan="6" className="empty-msg">No active orders! 🧁</td></tr>
+  )}
+</tbody>
           </table>
         ) : activeTab === "history" ? (
           <table className="custom-table">
@@ -249,9 +267,9 @@ const fetchData = async () => {
               </tr>
             </thead>
             <tbody>
-              {orders.filter(o => o.payment_status === "Completed").length > 0 ? (
-                orders.filter(o => o.payment_status === "Completed").map((order) => (
-                  <tr key={order.order_id} className="history-row">
+              {orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length > 0 ? (
+              orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").map((order) => (
+                <tr key={order.order_id} className="history-row">
                     <td>{order.customer_id}</td>
                     <td>{order.product_name}</td>
                     <td>₹{order.price}</td>
