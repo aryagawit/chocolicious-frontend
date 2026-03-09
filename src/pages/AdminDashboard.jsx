@@ -18,33 +18,30 @@ export default function AdminDashboard() {
   }, []);
 
 const fetchData = async () => {
-  const token = localStorage.getItem("token"); // Get your login token
+  const token = localStorage.getItem("token"); 
   try {
+    // 1. Fetch Orders (Matches server.js: app.get("/api/admin/orders"...))
     const orderRes = await fetch(`${baseURL}/api/admin/orders`, {
-      headers: { "Authorization": `Bearer ${token}`} // 👈 Added authorization
+      headers: { "Authorization": `Bearer ${token}`} 
     });
-    if (orderRes.status === 403) {
-      alert("Access Denied: You do not have Admin privileges.");
-      return;
-    }
-    const orderData = await orderRes.json();
     
-    if (orderData.success && Array.isArray(orderData.orders)) {
-      setOrders(orderData.orders);
-    } else if (Array.isArray(orderData)) {
-      setOrders(orderData);
-    } else {
-      setOrders([]);
-    }
+    const orderData = await orderRes.json();
+    // Your server sends the array directly, so we use it directly
+    setOrders(Array.isArray(orderData) ? orderData : []);
 
-    const invRes = await fetch(`${baseURL}/api/inventory`, {
-      headers: { "Authorization": `Bearer ${token}` } // 👈 Added authorization
+    // 2. Fetch Inventory (Matches server.js: app.get("/api/admin/inventory"...))
+    const invRes = await fetch(`${baseURL}/api/admin/inventory`, {
+      headers: { "Authorization": `Bearer ${token}` } 
     });
+    
     const invData = await invRes.json();
-    setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
+    // Setting the inventory state
+    setInventory(Array.isArray(invData) ? invData : []);
+
   } catch (err) {
     console.error("Error fetching admin data:", err);
     setOrders([]); 
+    setInventory([]);
   }
 };
 
