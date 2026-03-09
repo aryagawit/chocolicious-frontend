@@ -1,13 +1,16 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { FaEnvelope, FaLock, FaShieldAlt, FaSyncAlt } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaShieldAlt, FaSyncAlt, FaUser } from "react-icons/fa";
 import loginLogo from "../assets/finallogo.png"; 
 import "./login.css";
 
 export default function Login() {
   const generateCaptcha = () => Math.floor(1000 + Math.random() * 9000).toString();
   
+  // Toggles between Login and Signup modes
+  const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState(""); // New field for Signup
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [captchaInput, setCaptchaInput] = useState("");
@@ -22,46 +25,55 @@ export default function Login() {
   // Validation Logic
   const isEmailValid = email.includes("@") && email.includes(".");
   const isPasswordValid = password.length >= 6;
+  const isNameValid = isLogin ? true : name.trim().length > 2;
   const isCaptchaValid = captchaInput === generatedCaptcha;
-  const canProceed = isEmailValid && isPasswordValid && isCaptchaValid && acceptedTerms;
+  const canProceed = isEmailValid && isPasswordValid && isCaptchaValid && isNameValid && acceptedTerms;
 
-  const handleLogin = async (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
     if (!canProceed) return;
 
     setLoading(true);
+    // Determine which endpoint to hit
+    const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signup";
+    const payload = isLogin ? { email, password } : { name, email, password };
+
     try {
-      const res = await fetch(`${baseURL}/api/auth/login`, {
+      const res = await fetch(`${baseURL}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
 
       if (data.success) {
-        // 1. Sync with AuthContext
-        login(data.user); 
+        if (isLogin) {
+          // Login Success Logic
+          login(data.user); 
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("isAdmin", data.user.is_admin ? "true" : "false");
+          alert("Login Successful!");
 
-        // 2. Persistent Storage
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("isAdmin", data.user.is_admin ? "true" : "false");
-
-        alert("Login Successful!");
-
-        // 3. Role-Based Redirect
-        if (data.user.is_admin === 1 || data.user.is_admin === true) {
-          navigate("/admin-dashboard");
+          if (data.user.is_admin === 1 || data.user.is_admin === true) {
+            navigate("/admin-dashboard");
+          } else {
+            navigate("/products");
+          }
         } else {
-          navigate("/products");
+          // Signup Success Logic
+          alert("Account created successfully! Please log in.");
+          setIsLogin(true); // Switch to login mode
+          setGeneratedCaptcha(generateCaptcha());
+          setCaptchaInput("");
         }
       } else {
-        alert(data.message || "Invalid credentials");
-        setGeneratedCaptcha(generateCaptcha()); // Refresh captcha on failure
+        alert(data.message || "Authentication failed");
+        setGeneratedCaptcha(generateCaptcha());
       }
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("Auth error:", err);
       alert("Something went wrong. Please try again later.");
     } finally {
       setLoading(false);
@@ -80,10 +92,25 @@ export default function Login() {
         </div>
 
         <div className="form-panel">
-          <form className="form-content" onSubmit={handleLogin}>
+          <form className="form-content" onSubmit={handleAuth}>
             <div className="form-fade-in">
-              <h1>Welcome Back</h1>
+              <h1>{isLogin ? "Welcome Back" : "Create Account"}</h1>
               
+              {!isLogin && (
+                <div className="input-group">
+                  <label><FaUser /> Full Name</label>
+                  <div className="modern-input">
+                    <input 
+                      type="text" 
+                      placeholder="Arya Gawit" 
+                      value={name} 
+                      onChange={(e) => setName(e.target.value)} 
+                      required
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="input-group">
                 <label><FaEnvelope /> Email Address</label>
                 <div className="modern-input">
@@ -143,8 +170,21 @@ export default function Login() {
                 className={`submit-btn ${canProceed && !loading ? "active-unlocked" : "locked-state"}`}
                 disabled={!canProceed || loading}
               >
-                {loading ? "AUTHENTICATING..." : "LOGIN"}
+                {loading ? "AUTHENTICATING..." : (isLogin ? "LOGIN" : "SIGN UP")}
               </button>
+
+              <div className="toggle-auth">
+                <p>
+                  {isLogin ? "New to Chocolicious?" : "Already have an account?"} 
+                  <button 
+                    type="button" 
+                    className="toggle-btn" 
+                    onClick={() => setIsLogin(!isLogin)}
+                  >
+                    {isLogin ? " Create Account" : " Login Now"}
+                  </button>
+                </p>
+              </div>
             </div>
           </form>
         </div>
