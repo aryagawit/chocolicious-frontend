@@ -61,6 +61,7 @@ export default function Receipt() {
           <div className="receipt-row">
             <span>Delivery To:</span>
             <p className="receipt-address">{orderData.address || orderData.delivery_address || "Address provided at checkout"}
+
             </p>
           </div>
           
