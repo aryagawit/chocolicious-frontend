@@ -87,8 +87,7 @@ export default function ProfileSetup() {
       gender: formData.gender,
       dob: formData.dob,
       anniversary: formData.anniversary,
-      address: formData.address,
-      phone: storedPhone
+      address: formData.address
     };
 
     try {
