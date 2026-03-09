@@ -158,62 +158,74 @@ const fetchData = async () => {
               </tr>
             </thead>
             <tbody>
-              {orders.filter(o => o.payment_status !== "Completed").length > 0 ? (
-                orders.filter(o => o.payment_status !== "Completed").map((order) => {
-                  const isDelivered = order.order_status?.toLowerCase() === "delivered";
-                  return (
-                    <tr key={order.order_id}>
-                      <td>
-                        <strong>ID: {order.customer_id}</strong><br/>
-                        <small>📞 {order.phone || "N/A"}</small>
-                      </td>
-                      <td className="product-cell">{order.product_name}</td>
-                      <td className="amount-cell">₹{order.price}</td>
-                      <td>
-                        <span className={`status-pill status-${order.order_status?.toLowerCase().replace(/\s+/g, '-')}`}>
-                          {order.order_status}
-                        </span>
-                      </td>
-                      <td>
-                        <select 
-                          className="admin-select"
-                          value={order.order_status} 
-                          onChange={(e) => updateStatus(order.order_id, e.target.value)}
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Accepted">Accepted</option>
-                          <option value="Baking">Baking</option>
-                          <option value="Out for Delivery">Out for Delivery</option>
-                          <option value="Delivered">Delivered</option>
-                        </select>
-                      </td>
-                      <td>
-                        <div className="payment-actions">
-                          <button 
-                            disabled={!isDelivered}
-                            onClick={() => {
-                              if(window.confirm(`Mark ₹${order.price} as paid via Cash?`)) 
-                                markAsPaid(order.order_id, "Cash");
-                            }} 
-                            className={`pay-btn cash ${!isDelivered ? 'disabled-btn' : ''}`}
+              {orders.filter(o => {
+                // We want orders that are NOT completed AND have a pending-style status
+                const pStatus = (o.payment_status || "").toLowerCase();
+                const oStatus = (o.order_status || "").toLowerCase();
+                
+                // Show it if payment isn't done AND it hasn't been delivered yet
+                return pStatus !== "completed" && oStatus !== "completed";
+              }).length > 0 ? (
+                orders
+                  .filter(o => {
+                    const pStatus = (o.payment_status || "").toLowerCase();
+                    return pStatus !== "completed";
+                  })
+                  .map((order) => {
+                    const isDelivered = order.order_status?.toLowerCase() === "delivered";
+                    return (
+                      <tr key={order.order_id}>
+                        <td>
+                          <strong>ID: {order.customer_id}</strong><br/>
+                          <small>📞 {order.phone || "N/A"}</small>
+                        </td>
+                        <td className="product-cell">{order.product_name}</td>
+                        <td className="amount-cell">₹{order.price}</td>
+                        <td>
+                          <span className={`status-pill status-${(order.order_status || "pending").toLowerCase().replace(/\s+/g, '-')}`}>
+                            {order.order_status}
+                          </span>
+                        </td>
+                        <td>
+                          <select 
+                            className="admin-select"
+                            value={order.order_status} 
+                            onChange={(e) => updateStatus(order.order_id, e.target.value)}
                           >
-                            Cash
-                          </button>
-                          <button 
-                            disabled={!isDelivered}
-                            onClick={() => {
-                              const upiId = window.prompt(`Order Amount: ₹${order.price}\nEnter UPI ID:`, "customer@upi");
-                              if(upiId) markAsPaid(order.order_id, `UPI (${upiId})`);
-                            }} 
-                            className={`pay-btn upi ${!isDelivered ? 'disabled-btn' : ''}`}
-                          >
-                            UPI
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
+                            <option value="Pending">Pending</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Baking">Baking</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div className="payment-actions">
+                            <button 
+                              disabled={!isDelivered}
+                              onClick={() => {
+                                if(window.confirm(`Mark ₹${order.price} as paid via Cash?`)) 
+                                  markAsPaid(order.order_id, "Cash");
+                              }} 
+                              className={`pay-btn cash ${!isDelivered ? 'disabled-btn' : ''}`}
+                            >
+                              Cash
+                            </button>
+                            <button 
+                              disabled={!isDelivered}
+                              onClick={() => {
+                                const upiId = window.prompt(`Order Amount: ₹${order.price}\nEnter UPI ID:`, "customer@upi");
+                                if(upiId) markAsPaid(order.order_id, `UPI (${upiId})`);
+                              }} 
+                              className={`pay-btn upi ${!isDelivered ? 'disabled-btn' : ''}`}
+                            >
+                              UPI
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
               ) : (
                 <tr><td colSpan="6" className="empty-msg">No active orders! 🧁</td></tr>
               )}
