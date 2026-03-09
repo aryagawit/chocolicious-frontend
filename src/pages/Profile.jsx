@@ -72,7 +72,7 @@ export default function ProfileSetup() {
   fetchOrders();
 }, [isAdmin]); // Dependencies ensure it runs when login state changes
 
-  const isFormValid = formData.fullName.trim() !== "" && formData.gender !== "";
+  const isFormValid = formData.fullName.trim() !== "" && formData.gender !== "" && formData.phone.trim() !== "";
 
   // 2. Handle Saving/Updating
   const handleSubmit = async (e) => {
