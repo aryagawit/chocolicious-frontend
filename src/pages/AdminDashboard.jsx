@@ -19,52 +19,32 @@ export default function AdminDashboard() {
 
 const fetchData = async () => {
   const token = localStorage.getItem("token"); 
-
-  if (!token) {
-    console.error("Token missing from localStorage!");
-    return;
-  }
+  if (!token) return;
   
   try {
     // 1. Fetch Orders
     const orderRes = await fetch(`${baseURL}/api/admin/orders`, {
-      headers: { 
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
+      headers: { "Authorization": `Bearer ${token}` }
     });
-
     const orderData = await orderRes.json();
-    console.log("RAW ORDER DATA FROM SERVER:", orderData);
-
-    // FIX: Handles data if it's a plain array OR inside { success: true, orders: [] }
-    const actualOrders = Array.isArray(orderData) 
-      ? orderData 
-      : (orderData.orders || orderData.data || []);
     
-    setOrders(actualOrders); 
+    // Simple assignment: if it's an array, use it. If not, look for .orders
+    setOrders(Array.isArray(orderData) ? orderData : (orderData.orders || []));
 
     // 2. Fetch Inventory
     const invRes = await fetch(`${baseURL}/api/admin/inventory`, {
-      headers: { 
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      } 
+      headers: { "Authorization": `Bearer ${token}` } 
     });
-    
     const invData = await invRes.json();
-    console.log("RAW INVENTORY DATA:", invData);
+    
+    // Simple assignment: This got your inventory working before!
+    setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
 
-    // FIX: Handles inventory array wrapping
-    const actualInventory = Array.isArray(invData) 
-      ? invData 
-      : (invData.inventory || invData.data || []);
-      
-    setInventory(actualInventory);
+    console.log("Data Refreshed Successfully");
 
   } catch (err) {
-    console.error("Error fetching admin data:", err);
-    // REMOVED: setOrders([]) - Keeping old data on error prevents the "Blank Screen" flash
+    console.error("Fetch Error:", err);
+    // We removed the setOrders([]) here so the screen doesn't wipe out on a glitch
   }
 };
 
