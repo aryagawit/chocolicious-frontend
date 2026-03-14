@@ -292,24 +292,57 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
               </tr>
             </thead>
             <tbody>
-              {orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length > 0 ? (
-              orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").map((order) => (
-                <tr key={order.order_id} className="history-row">
-                    <td><strong>ID: {order.customer_id}</strong><br/>
-                        <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
-                        <small>📞 {order.phone || "N/A"}</small>
-                        </td>
-                    <td>{order.product_name}</td>
-                    <td>₹{order.price}</td>
-                    <td>{new Date(order.order_date).toLocaleDateString()}</td>
-                    <td><span className="category-tag">{order.payment_mode}</span></td>
-                    <td><span className="status-pill status-delivered">Delivered</span></td>
-                  </tr>
-                ))
-              ) : (
-                <tr><td colSpan="6" className="empty-msg">No history found. Complete a payment to see it here!</td></tr>
-              )}
-            </tbody>
+
+{/* NORMAL ORDERS HISTORY */}
+{orders
+  .filter(o => (o.payment_status || "").toLowerCase() === "completed")
+  .map((order) => (
+<tr key={`order-${order.order_id}`} className="history-row">
+<td>
+<strong>ID: {order.customer_id}</strong><br/>
+<small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
+<small>📞 {order.phone || "N/A"}</small>
+</td>
+
+<td>{order.product_name}</td>
+<td>₹{order.price}</td>
+<td>{new Date(order.order_date).toLocaleDateString()}</td>
+<td><span className="category-tag">{order.payment_mode}</span></td>
+<td><span className="status-pill status-delivered">Delivered</span></td>
+</tr>
+))}
+
+{/* CUSTOM ORDER HISTORY */}
+{customOrders
+  .filter(o => (o.status || "").toLowerCase() === "delivered")
+  .map((order) => (
+<tr key={`custom-${order.id}`} className="history-row">
+
+<td>
+<strong>Custom Order</strong><br/>
+<small>📞 {order.phone}</small>
+</td>
+
+<td>{order.order_type}</td>
+<td>₹{order.price}</td>
+<td>{new Date(order.created_at).toLocaleDateString()}</td>
+<td><span className="category-tag">Custom</span></td>
+<td><span className="status-pill status-delivered">Delivered</span></td>
+
+</tr>
+))}
+
+{orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length === 0 &&
+customOrders.filter(o => (o.status || "").toLowerCase() === "delivered").length === 0 && (
+<tr>
+<td colSpan="6" className="empty-msg">
+No history found yet 🍰
+</td>
+</tr>
+)}
+
+</tbody>
+
           </table>
         ) : activeTab === "custom" ? (
   <table className="custom-table">
