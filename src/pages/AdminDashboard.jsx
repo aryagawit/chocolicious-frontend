@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaUser } from "react-icons/fa";
 import "./admin.css";
 
 export default function AdminDashboard() {
@@ -182,6 +183,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
               <strong>ID: {order.customer_id}</strong><br/>
               <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
               <small>📞 {order.phone || "N/A"}</small>
+              <small>🏠 {order.address || "N/A"}</small>
             </td>
             <td className="product-cell">{order.product_name}</td>
             <td className="amount-cell">₹{order.price}</td>
