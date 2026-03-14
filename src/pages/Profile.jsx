@@ -174,11 +174,16 @@ const navigateToReceipt = (order) => {
           <div className="input-group">
             <label><FaPhone style={{ color: "#2e333b" }} /> Phone Number <span>*</span></label>
             <div className="input-wrapper">
-              <input 
-                type="tel" 
-                placeholder="Ex: 9876543210" 
-                value={formData.phone} 
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+              <input
+                type="tel"
+                placeholder="Ex: 9876543210"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    phone: e.target.value.replace(/\D/g, "")
+                  })
+                }
               />
             </div>
           </div>
