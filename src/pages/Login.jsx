@@ -105,7 +105,7 @@ export default function Login() {
                   <div className="modern-input">
                     <input 
                       type="text" 
-                      placeholder="Arya Gawit" 
+                      placeholder="Enter your name" 
                       value={name} 
                       onChange={(e) => setName(e.target.value)} 
                       required
@@ -119,7 +119,7 @@ export default function Login() {
                 <div className="modern-input">
                   <input 
                     type="email" 
-                    placeholder="admin@chocolicious.in" 
+                    placeholder="example@gmail.com" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                     required
