@@ -267,3 +267,40 @@
   border-color: #cfa85f;
   box-shadow: 0 0 4px rgba(207,168,95,0.3);
 }
+
+.name-section {
+  margin-bottom: 15px;
+}
+
+.name-section input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+}
+.name-section {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.name-section label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.name-section input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.name-section input:focus {
+  outline: none;
+  border-color: #cfa85f;
+  box-shadow: 0 0 4px rgba(207,168,95,0.3);
+}

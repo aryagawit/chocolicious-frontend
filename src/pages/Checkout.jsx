@@ -15,6 +15,7 @@ export default function Checkout() {
   const [orderData, setOrderData] = useState({
     address: "",
     phone: "",
+    fullName: "",
     deliveryDate: "",
     timeSlot: "Evening (6 PM - 9 PM)",
     paymentMode: "Pay on Delivery (Cash/UPI)"
@@ -29,7 +30,7 @@ export default function Checkout() {
   const isFormValid =
     (orderData.address || "").trim() !== "" &&
     (orderData.phone || "").trim() !== "" &&
-    orderData.deliveryDate !== "";
+    orderData.deliveryDate !== "" && orderData.fullName !== "";
 
   // 3. Load order summary from LocalStorage
   useEffect(() => {
@@ -57,7 +58,8 @@ export default function Checkout() {
           setOrderData(prev => ({
             ...prev,
             address: data.user.address || "",
-            phone: data.user.phone || ""
+            phone: data.user.phone || "",
+            fullName: data.user.name || ""
           }));
       }
       } catch (err) {
@@ -75,6 +77,7 @@ export default function Checkout() {
     const payload = {
       orderName: localStorage.getItem("orderName"),
       amount: localStorage.getItem("orderTotal"),
+      fullName: orderData.fullName,
       phone: orderData.phone,
       address: orderData.address,
       deliveryDate: orderData.deliveryDate,
@@ -138,6 +141,17 @@ export default function Checkout() {
     <div className="checkout-wrapper">
       <div className="checkout-card">
         <h3><FaTruck /> Delivery Details</h3>
+        <div className="name-section">
+          <label><FaPhone />Name</label>
+          <input
+            type="text"
+            value={orderData.fullName}
+            onChange={(e) =>
+              setOrderData({ ...orderData, fullName: e.target.value })
+            }
+            placeholder="Enter your name"
+          />
+        </div>
         <div className="phone-section">
           <label><FaPhone />Phone Number</label>
           <input
