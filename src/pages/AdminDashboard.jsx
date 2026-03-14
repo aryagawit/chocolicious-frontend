@@ -180,7 +180,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
           <tr key={order.order_id}>
             <td>
               <strong>ID: {order.customer_id}</strong><br/>
-              <small><FaUser /> {order.name || "N/A"}</small><br/>
+              <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
               <small>📞 {order.phone || "N/A"}</small>
             </td>
             <td className="product-cell">{order.product_name}</td>
