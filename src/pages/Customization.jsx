@@ -69,7 +69,7 @@ const bentoFlavors = [
     if (phone && phone !== "null") {
       try {
         // A. Save to Customizations Table (The permanent record)
-        await fetch(`${baseURL}/api/customizations/add`, {
+        await fetch(`${baseURL}/api/cart/customizations/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json",
              Authorization: `Bearer ${localStorage.getItem("token")}`},
