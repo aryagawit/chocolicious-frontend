@@ -61,7 +61,7 @@ export default function Navbar() {
   const onSelectSuggestion = (p) => {
     setSearchTerm("");
     setSuggestions([]);
-    navigate(`/products?q=${encodeURIComponent(p.name)}`);
+    navigate(`/products?q=${encodeURIComponent(searchTerm)}`);
   }
 
   const onSubmitSearch = (e) => {
