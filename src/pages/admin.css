@@ -329,3 +329,83 @@
   background-color: #f8d7da; /* Soft Pink/Red */
   color: #842029;
 }
+
+/* -------- Custom Orders Table Enhancements -------- */
+
+.custom-table thead {
+  background: transparent;
+}
+
+.custom-table th {
+  color: #8d6e63;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 15px;
+}
+
+.custom-table td {
+  padding: 18px 15px;
+  color: #4b3022;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Image link styling */
+.custom-table a {
+  color: #a0522d;
+  font-weight: 600;
+  text-decoration: none;
+  background: #f8f1e9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #d4a373;
+  font-size: 0.75rem;
+}
+
+.custom-table a:hover {
+  background: #4b3022;
+  color: white;
+  border-color: #4b3022;
+}
+
+/* Product description cell */
+.product-cell {
+  max-width: 280px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Price styling */
+.price-cell {
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* Additional status colors to match your dashboard */
+
+.status-accepted {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-out-for-delivery {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+/* Smooth dropdown style to match admin-select */
+.admin-select {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #d4a373;
+  background: #fff;
+  color: #4b3022;
+  font-size: 0.8rem;
+}
+
+/* Hover row feel like inventory table */
+.custom-table tr:hover td {
+  background: #fdf7f0;
+}

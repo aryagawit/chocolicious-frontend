@@ -5,6 +5,7 @@ import "./admin.css";
 export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
+  const [customOrders, setCustomOrders] = useState([]);
   const baseURL = "https://chocolicious-api.onrender.com";
   const [activeTab, setActiveTab] = useState("orders");
   const [newItem, setNewItem] = useState({ 
@@ -40,6 +41,19 @@ const fetchData = async () => {
     
     // Simple assignment: This got your inventory working before!
     setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
+
+    // 3. Fetch Custom Orders
+const customRes = await fetch(`${baseURL}/api/admin/customizations`, {
+  headers: { "Authorization": `Bearer ${token}` }
+});
+
+const customData = await customRes.json();
+
+setCustomOrders(
+  Array.isArray(customData)
+    ? customData
+    : (customData.customizations || [])
+);
 
     console.log("Data Refreshed Successfully");
 
@@ -134,6 +148,32 @@ const fetchData = async () => {
     }
   };
 
+  const updateCustomStatus = async (id, newStatus) => {
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`${baseURL}/api/admin/customizations/status`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id,
+        status: newStatus
+      })
+    });
+
+    if (res.ok) {
+      fetchData();
+    }
+
+  } catch (err) {
+    console.error("Custom order update failed", err);
+  }
+};
+
+
 console.log("Active count:", orders.filter(o => (o.payment_status || "").toLowerCase() !== "completed").length);
 console.log("History count:", orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length);
 
@@ -150,6 +190,8 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
         <button className={activeTab === "orders" ? "active" : ""} onClick={() => setActiveTab("orders")}>Active Orders</button>
         <button className={activeTab === "inventory" ? "active" : ""} onClick={() => setActiveTab("inventory")}>Inventory</button>
         <button className={activeTab === "history" ? "active" : ""} onClick={() => setActiveTab("history")}>Order History</button>
+        <button className={activeTab === "custom" ? "active" : ""} onClick={() => setActiveTab("custom")}>Custom Orders</button>
+
       </div>
 
       <main className="admin-glass-card">
@@ -328,6 +370,71 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
                   ))}
                 </tbody>
               </table>
+              ) : activeTab === "custom" ? (
+              <table className="custom-table">
+                <thead>
+                  <tr>
+                    <th>Phone</th>
+                    <th>Order Type</th>
+                    <th>Details</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {customOrders.length > 0 ? (
+                    customOrders.map((order) => (
+                      <tr key={order.id}>
+                        <td>{order.fullName || "N/A"}</td>
+                        <td>{order.phone}</td>
+                        <td>{order.order_type}</td>
+                        <td className="product-cell">{order.custom_info}</td>
+                        <td className="price-cell">₹{order.price}</td>
+                        <td>
+                          {order.image_url ? (
+                            <a href={order.image_url} target="_blank" rel="noreferrer">
+                              View Image
+                            </a>
+                          ) : (
+                            "No Image"
+                          )}
+                        </td>
+
+                        <td>
+                          <span className={`status-pill status-${order.status.toLowerCase().replace(/\s+/g,'-')}`}>
+                            {order.status}
+                          </span>
+                        </td>
+
+                        <td>
+                          <select
+                            value={order.status}
+                            className="admin-select"
+                            onChange={(e) =>
+                              updateCustomStatus(order.id, e.target.value)
+                            }
+                          >
+                            <option>Pending</option>
+                            <option>Accepted</option>
+                            <option>Baking</option>
+                            <option>Out for Delivery</option>
+                            <option>Delivered</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="7" className="empty-msg">
+                        No custom orders yet 🍫
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+
             </div>
           </div>
         )}
