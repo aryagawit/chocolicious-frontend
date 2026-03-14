@@ -312,71 +312,90 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
             </tbody>
           </table>
         ) : activeTab === "custom" ? (
-          <table className="custom-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Order Type</th>
-                <th>Details</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Status</th>
-                <th>Update</th>
-              </tr>
-            </thead>
+  <table className="custom-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Order Type</th>
+        <th>Details</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Update</th>
+      </tr>
+    </thead>
 
-            <tbody>
+    <tbody>
+      {customOrders
+        .filter(o => (o.status || "").toLowerCase() !== "delivered")
+        .length > 0 ? (
 
-              {/* NORMAL ORDERS */}
-              {orders
-                .filter(o => (o.payment_status || "").toLowerCase() === "completed")
-                .map((order) => (
-              <tr key={`order-${order.order_id}`} className="history-row">
-              <td>
-              <strong>ID: {order.customer_id}</strong><br/>
-              <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
-              <small>📞 {order.phone || "N/A"}</small>
-              </td>
+        customOrders
+          .filter(o => (o.status || "").toLowerCase() !== "delivered")
+          .map((order) => (
+            <tr key={order.id}>
+              <td>{order.fullName || "N/A"}</td>
 
-              <td>{order.product_name}</td>
-              <td>₹{order.price}</td>
-              <td>{new Date(order.order_date).toLocaleDateString()}</td>
-              <td><span className="category-tag">{order.payment_mode}</span></td>
-              <td><span className="status-pill status-delivered">Delivered</span></td>
-              </tr>
-              ))}
-
-              {/* CUSTOM ORDERS */}
-              {customOrders
-                .filter(o => (o.status || "").toLowerCase() === "delivered")
-                .map((order) => (
-              <tr key={`custom-${order.id}`} className="history-row">
-              <td>
-              <strong>Custom Order</strong><br/>
-              <small>📞 {order.phone}</small>
-              </td>
+              <td>{order.phone}</td>
 
               <td>{order.order_type}</td>
-              <td>₹{order.price}</td>
-              <td>{new Date(order.created_at).toLocaleDateString()}</td>
-              <td><span className="category-tag">Custom</span></td>
-              <td><span className="status-pill status-delivered">Delivered</span></td>
-              </tr>
-              ))}
 
-              {orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length === 0 &&
-              customOrders.filter(o => (o.status || "").toLowerCase() === "delivered").length === 0 && (
-              <tr>
-              <td colSpan="6" className="empty-msg">
-              No history found yet 🍰
+              <td className="product-cell">
+                {order.custom_info}
               </td>
-              </tr>
-              )}
 
-              </tbody>
-          </table>
-        ) : (
+              <td className="price-cell">
+                ₹{order.price}
+              </td>
+
+              <td>
+                {order.image_url ? (
+                  <a href={order.image_url} target="_blank" rel="noreferrer">
+                    View Image
+                  </a>
+                ) : (
+                  "No Image"
+                )}
+              </td>
+
+              <td>
+                <span className={`status-pill status-${(order.status || "pending")
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}>
+                  {order.status}
+                </span>
+              </td>
+
+              <td>
+                <select
+                  value={order.status}
+                  className="admin-select"
+                  onChange={(e) =>
+                    updateCustomStatus(order.id, e.target.value)
+                  }
+                >
+                  <option>Pending</option>
+                  <option>Accepted</option>
+                  <option>Baking</option>
+                  <option>Out for Delivery</option>
+                  <option>Delivered</option>
+                </select>
+              </td>
+            </tr>
+          ))
+
+      ) : (
+        <tr>
+          <td colSpan="8" className="empty-msg">
+            No active custom orders 🍫
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+)
+: (
           <div className="inventory-dashboard-layout">
             <div className="inventory-form-card">
               <h3>Add New Ingredient</h3>
