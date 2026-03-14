@@ -241,7 +241,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
           <table className="custom-table">
             <thead>
               <tr>
-                <th>Customer ID</th>
+                <th>Customer Info</th>
                 <th>Order Items</th>
                 <th>Amount Paid</th>
                 <th>Date</th>
@@ -253,7 +253,10 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
               {orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length > 0 ? (
               orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").map((order) => (
                 <tr key={order.order_id} className="history-row">
-                    <td>{order.customer_id}</td>
+                    <td><strong>ID: {order.customer_id}</strong><br/>
+                        <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
+                        <small>📞 {order.phone || "N/A"}</small>
+                        </td>
                     <td>{order.product_name}</td>
                     <td>₹{order.price}</td>
                     <td>{new Date(order.order_date).toLocaleDateString()}</td>
