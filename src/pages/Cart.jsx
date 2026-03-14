@@ -25,7 +25,15 @@ export default function Cart() {
           });
           const data = await res.json();
           if (data.success) {
-            setCart(data.cart); 
+            const formattedCart = data.cart.map(item => ({
+              ...item,
+              id: item.id || Date.now(),
+              qty: item.qty || 1,
+              name: item.product_name
+            }));
+
+          setCart(formattedCart);
+
           }
         } catch (err) {
           console.error("Failed to fetch cart from DB", err);
@@ -179,9 +187,9 @@ const total = cart.reduce((sum, item) => {
 
                   <div className="item-actions-panel">  
                     <div className="quantity-toggle">
-                      <button onClick={() => handleUpdateQty(item, -1)} disabled={item.qty <= 1}>-</button>
+                      <button onClick={() => handleUpdateQty(item.id, -1)} disabled={item.qty <= 1}>-</button>
                       <span className="qty-count">{item.qty}</span>
-                      <button onClick={() => handleUpdateQty(item, 1)}>+</button>
+                      <button onClick={() => handleUpdateQty(item.id, 1)}>+</button>
                     </div>                   
                     <div className="price-breakdown">
                       <p className="item-subtotal">₹{(typeof item.price === 'string' ? parseInt(item.price.replace(/[^\d]/g, "")) : item.price) * item.qty}</p>

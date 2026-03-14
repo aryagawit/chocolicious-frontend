@@ -82,17 +82,19 @@ const bentoFlavors = [
         });
 
         // B. Save to Cart Table (The active basket for +/- logic)
-        await fetch(`${baseURL}/api/cart/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+       await fetch(`${baseURL}/api/cart/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           phone: phone,
           product_name: orderData.product_name,
           qty: 1,
           price: orderData.price,
-          custom_info: customDescription
+          custom_info: customDescription,
+          size: orderData.size,
+          notes: orderData.notes
         }),
-        });
+      });
 
         console.log("✅ Successfully synced customization and cart to DB");
       } catch (err) {
