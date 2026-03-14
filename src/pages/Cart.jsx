@@ -36,14 +36,11 @@ export default function Cart() {
   }, [user, setCart]);
 
   const handleUpdateQty = async (id, change) => {
-    const item = cart.find(i => i.id === id);
+    const item = cart.find(i => i.id === id || i.product_name === id);
     const userPhone = localStorage.getItem("userPhone");
-
     if (!item || !userPhone) return;
-
     const newQty = item.qty + change;
     if (newQty < 1) return;
-
     try {
       await fetch(`${baseURL}/api/cart/update-qty`, {
         method: "PUT",
@@ -81,14 +78,15 @@ const handleRemoveItem = async (item) => {
         },
         body: JSON.stringify({ 
           phone: userPhone, 
-          product_name: item.product_name || item.name
+          product_name: item.product_name || item.name,
+          custom_info: item.custom_info || ""
         })
       });
     } catch (err) {
       console.error("Delete failed", err);
     }
   }
-};;
+};
   const getPrice = (price) => {
   if (typeof price === 'number') return price;
   if (typeof price === 'string') {
@@ -181,9 +179,9 @@ const total = cart.reduce((sum, item) => {
 
                   <div className="item-actions-panel">  
                     <div className="quantity-toggle">
-                      <button onClick={() => handleUpdateQty(item.id, -1)} disabled={item.qty <= 1}>-</button>
+                      <button onClick={() => handleUpdateQty(item, -1)} disabled={item.qty <= 1}>-</button>
                       <span className="qty-count">{item.qty}</span>
-                      <button onClick={() => handleUpdateQty(item.id, 1)}>+</button>
+                      <button onClick={() => handleUpdateQty(item, 1)}>+</button>
                     </div>                   
                     <div className="price-breakdown">
                       <p className="item-subtotal">₹{(typeof item.price === 'string' ? parseInt(item.price.replace(/[^\d]/g, "")) : item.price) * item.qty}</p>
