@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { FaCalendarCheck, FaTruck, FaMapPin, FaReceipt, FaArrowLeft } from 'react-icons/fa';
+import { FaCalendarCheck, FaTruck, FaMapPin, FaReceipt, FaArrowLeft, FaPhone } from 'react-icons/fa';
 import { CartContext } from "../context/CartContext"; 
 import "./checkout.css";
 
@@ -139,7 +139,7 @@ export default function Checkout() {
       <div className="checkout-card">
         <h3><FaTruck /> Delivery Details</h3>
         <div className="phone-section">
-          <label>Phone Number</label>
+          <label><FaPhone />Phone Number</label>
           <input
             type="tel"
             value={orderData.phone}
