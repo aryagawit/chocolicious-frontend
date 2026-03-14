@@ -44,17 +44,15 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const onSearchChange = (v) => {
+const onSearchChange = (v) => {
   setSearchTerm(v);
-  if (!v) return setSuggestions([]);
-
+  if (!v) {
+    setSuggestions([]);
+    return;
+  }
   const q = v.toLowerCase();
   const safeList = Array.isArray(productsList) ? productsList : [];
-
-  const matches = safeList
-    .filter(p => p.name && p.name.toLowerCase().includes(q))
-    .slice(0, 6);
-
+  const matches = safeList.filter(p => p.name && p.name.toLowerCase().includes(q)).slice(0, 6);
   setSuggestions(matches);
 }
 
