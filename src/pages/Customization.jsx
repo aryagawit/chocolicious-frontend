@@ -51,12 +51,16 @@ const bentoFlavors = [
     const customDescription = `${flavorInfo}Size: ${type === "Gift Box" ? `${hamperItems.length} items` : (type === "Cake" ? weight : `${balls} balls`)}, Notes: ${notes}${type === "Gift Box" ? `, Hamper: ${hamperItems.join(", ")}` : ""}`.trim();
     const orderData = {
       id: Date.now(),
-      name: type === "Gift Box" ? "Custom Hamper" : `Custom ${type}`,
+      product_name: type === "Gift Box" ? "Custom Hamper" : `Custom ${type}`,
       price: Math.round(finalAmount),
       qty: 1,
-      custom_info: customDescription, // Matches your new DB column
+      size: type === "Cake" ? weight : type === "Truffle Bouquet" ? `${balls} Balls` : null,
+      notes: notes,
+      hamperDetails: hamperItems.join(", "),
+      custom_info: customDescription,
       image: preview
     };
+
 
     // 2. Add to Local Cart UI (React Context)
     addToCart(orderData);
@@ -82,12 +86,12 @@ const bentoFlavors = [
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            phone: phone,
-            product_name: orderData.name,
-            qty: 1,
-            price: orderData.price,
-            custom_info: customDescription // This is key for the +/- identity
-          }),
+          phone: phone,
+          product_name: orderData.product_name,
+          qty: 1,
+          price: orderData.price,
+          custom_info: customDescription
+        }),
         });
 
         console.log("✅ Successfully synced customization and cart to DB");

@@ -175,6 +175,7 @@ const total = cart.reduce((sum, item) => {
                       {item.size && <p><b>Size/Weight:</b> {item.size}</p>}
                       {item.hamperDetails && <p className="hamper-detail-text"><b>Items:</b> {item.hamperDetails}</p>}
                       {item.notes && <p className="item-instruction-note"><b>Message/Note:</b> {item.notes}</p>}
+                      {item.custom_info && !item.notes && (<p className="item-instruction-note"><b>Details:</b> {item.custom_info}</p>)}
                     </div>
                   </div>
 
