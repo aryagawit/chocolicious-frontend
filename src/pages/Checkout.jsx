@@ -14,6 +14,7 @@ export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState({
     address: "",
+    phone: "",
     deliveryDate: "",
     timeSlot: "Evening (6 PM - 9 PM)",
     paymentMode: "Pay on Delivery (Cash/UPI)"
@@ -25,7 +26,10 @@ export default function Checkout() {
   });
 
   // 2. Logic for form validation
-  const isFormValid = (orderData.address || "").trim() !== "" && orderData.deliveryDate !== "";
+  const isFormValid =
+    (orderData.address || "").trim() !== "" &&
+    (orderData.phone || "").trim() !== "" &&
+    orderData.deliveryDate !== "";
 
   // 3. Load order summary from LocalStorage
   useEffect(() => {
@@ -49,9 +53,13 @@ export default function Checkout() {
           headers: { "Authorization": `Bearer ${token}` }
         });
         const data = await res.json();
-        if (res.ok && data.user) {
-          setOrderData(prev => ({ ...prev, address: data.user.address }));
-        }
+       if (res.ok && data.user) {
+          setOrderData(prev => ({
+            ...prev,
+            address: data.user.address || "",
+            phone: data.user.phone || ""
+          }));
+      }
       } catch (err) {
         console.error("Failed to fetch address", err);
       }
@@ -67,7 +75,7 @@ export default function Checkout() {
     const payload = {
       orderName: localStorage.getItem("orderName"),
       amount: localStorage.getItem("orderTotal"),
-      phone: localStorage.getItem("userPhone"),
+      phone: orderData.phone,
       address: orderData.address,
       deliveryDate: orderData.deliveryDate,
       timeSlot: orderData.timeSlot
@@ -130,7 +138,17 @@ export default function Checkout() {
     <div className="checkout-wrapper">
       <div className="checkout-card">
         <h3><FaTruck /> Delivery Details</h3>
-        
+        <div className="phone-section">
+          <label>Phone Number</label>
+          <input
+            type="tel"
+            value={orderData.phone}
+            onChange={(e) =>
+              setOrderData({ ...orderData, phone: e.target.value })
+            }
+            placeholder="Enter phone number"
+          />
+        </div>
         <div className="address-section">
           <label>Delivery Address</label>
           <textarea 

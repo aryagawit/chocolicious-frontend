@@ -230,3 +230,15 @@
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(179, 139, 89, 0.1);
 }
+
+.phone-section {
+  margin-bottom: 15px;
+}
+
+.phone-section input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+}

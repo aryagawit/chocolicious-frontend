@@ -72,7 +72,7 @@ export default function ProfileSetup() {
   fetchOrders();
 }, [isAdmin]); // Dependencies ensure it runs when login state changes
 
-  const isFormValid = formData.fullName.trim() !== "" && formData.gender !== "" && formData.phone.trim() !== "";
+  const isFormValid = formData.fullName.trim() !== "" && formData.gender !== "" && formData.phone.trim() !== "" && formData.address.trim() !== "";
 
   // 2. Handle Saving/Updating
   const handleSubmit = async (e) => {
@@ -242,7 +242,7 @@ const navigateToReceipt = (order) => {
           </div>
 
           <div className="input-group">
-            <label><FaMapMarkerAlt style={{ color: "#ff6b6b" }} /> Delivery Address</label>
+            <label><FaMapMarkerAlt style={{ color: "#ff6b6b" }} /> Delivery Address<span>*</span></label>
             <div className="input-wrapper">
               <textarea 
                 rows="2"
