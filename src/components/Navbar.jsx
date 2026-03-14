@@ -45,12 +45,18 @@ export default function Navbar() {
   };
 
   const onSearchChange = (v) => {
-    setSearchTerm(v);
-    if (!v) return setSuggestions([]);
-    const q = v.toLowerCase();
-    const matches = productsList.filter(p => p.name && p.name.toLowerCase().includes(q)).slice(0, 6);
-    setSuggestions(matches);
-  }
+  setSearchTerm(v);
+  if (!v) return setSuggestions([]);
+
+  const q = v.toLowerCase();
+  const safeList = Array.isArray(productsList) ? productsList : [];
+
+  const matches = safeList
+    .filter(p => p.name && p.name.toLowerCase().includes(q))
+    .slice(0, 6);
+
+  setSuggestions(matches);
+}
 
   const onSelectSuggestion = (p) => {
     setSearchTerm("");
