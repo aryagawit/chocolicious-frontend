@@ -71,7 +71,8 @@ const bentoFlavors = [
         // A. Save to Customizations Table (The permanent record)
         await fetch(`${baseURL}/api/customizations/add`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+             Authorization: `Bearer ${localStorage.getItem("token")}`},
           body: JSON.stringify({
             phone: phone,
             order_type: type,
