@@ -62,7 +62,7 @@ export default function Login() {
           if (data.user.is_admin === 1 || data.user.is_admin === true) {
             navigate("/admin-dashboard");
           } else {
-            navigate("/profile");
+            navigate("/Profile");
           }
         } else {
           // Signup Success Logic
