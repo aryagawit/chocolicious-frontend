@@ -409,3 +409,15 @@
 .custom-table tr:hover td {
   background: #fdf7f0;
 }
+.admin-tabs button {
+  position: relative;
+}
+
+.admin-tabs button span {
+  background: red;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 6px;
+}

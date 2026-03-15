@@ -3,6 +3,7 @@ import { FaUser } from "react-icons/fa";
 import "./admin.css";
 
 export default function AdminDashboard() {
+  const [prevOrderCount, setPrevOrderCount] = useState(0);
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [customOrders, setCustomOrders] = useState([]);
@@ -21,6 +22,12 @@ export default function AdminDashboard() {
 });
   useEffect(() => {
     fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 10000); // every 10 sec
+
+    return () => clearInterval(interval);
   }, []);
 
 const fetchData = async () => {
@@ -36,7 +43,12 @@ const fetchData = async () => {
     
     // Simple assignment: if it's an array, use it. If not, look for .orders
     setOrders(Array.isArray(orderData) ? orderData : (orderData.orders || []));
+        if (orderData.length > prevOrderCount) {
+          const audio = new Audio("/notification.mp3");
+          audio.play();
+    }
 
+setPrevOrderCount(orderData.length);
     // 2. Fetch Inventory
     const invRes = await fetch(`${baseURL}/api/admin/inventory`, {
       headers: { "Authorization": `Bearer ${token}` } 
@@ -185,7 +197,17 @@ setCustomOrders(
 
 console.log("Active count:", orders.filter(o => (o.payment_status || "").toLowerCase() !== "completed").length);
 console.log("History count:", orders.filter(o => (o.payment_status || "").toLowerCase() === "completed").length);
+const getOrderTime = (orderDate) => {
+  const now = new Date();
+  const orderTime = new Date(orderDate);
+  const diff = Math.floor((now - orderTime) / 1000);
 
+  const mins = Math.floor(diff / 60);
+  const hrs = Math.floor(mins / 60);
+
+  if (hrs > 0) return `${hrs} hr ${mins % 60} min ago`;
+  return `${mins} min ago`;
+};
   return (
     <div className="admin-container">
       <header className="admin-header">
@@ -196,8 +218,8 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
       </header>
 
       <div className="admin-tabs">
-        <button className={activeTab === "orders" ? "active" : ""} onClick={() => setActiveTab("orders")}>Active Orders</button>
-        <button className={activeTab === "custom" ? "active" : ""} onClick={() => setActiveTab("custom")}>Custom Orders</button>
+        <button className={activeTab === "orders" ? "active" : ""} onClick={() => setActiveTab("orders")}>Active Orders 🔴 {activeOrders}</button>
+        <button className={activeTab === "custom" ? "active" : ""} onClick={() => setActiveTab("custom")}>Custom Orders 🔴 {activeCustom}</button>
         <button className={activeTab === "inventory" ? "active" : ""} onClick={() => setActiveTab("inventory")}>Inventory</button>
         <button className={activeTab === "history" ? "active" : ""} onClick={() => setActiveTab("history")}>Order History</button>
 
@@ -235,6 +257,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
               <strong>ID: {order.customer_id}</strong><br/>
               <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
               <small>📅 Order Date: {new Date(order.order_date).toLocaleDateString()}</small><br/>
+              <small>🕒 {getOrderTime(order.order_date)}</small><br/>
               <small>📞 {order.phone || "N/A"}</small><br/>
               <small>🏠 {order.address || "N/A"}</small>
             </td>
