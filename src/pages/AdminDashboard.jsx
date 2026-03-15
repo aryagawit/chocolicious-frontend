@@ -14,7 +14,11 @@ export default function AdminDashboard() {
     quantity: 0, 
     unit: "kg" 
   });
-
+  const sortedOrders = [...orders].sort((a, b) => {
+  const dateA = new Date(a.delivery_date || a.deliveryDate || 0);
+  const dateB = new Date(b.delivery_date || b.deliveryDate || 0);
+  return dateA - dateB; // earliest date first
+});
   useEffect(() => {
     fetchData();
   }, []);
@@ -209,22 +213,29 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
             </thead>
             {/* Replace your existing <tbody> content with this */}
 <tbody>
-  {orders.filter(o => {
+  {sortedOrders.filter(o => {
     // Logic: If payment is NOT 'completed', it belongs in Active Orders.
     // This ensures even 'Delivered' orders stay here until they are PAID.
     const pStatus = (o.payment_status || "").toLowerCase();
     return pStatus !== "completed";
   }).length > 0 ? (
-    orders
-      .filter(o => (o.payment_status || "").toLowerCase() !== "completed")
-      .map((order) => {
+    sortedOrders
+        .filter(o => (o.payment_status || "").toLowerCase() !== "completed")
+        .map((order) => {
         const isDelivered = (order.order_status || "").toLowerCase() === "delivered";
         return (
           <tr key={order.order_id}>
             <td>
               <strong>ID: {order.customer_id}</strong><br/>
               <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
-              <small>📞 {order.phone || "N/A"}</small>
+              <small>📅 Delivery: {
+                order.delivery_date
+                  ? new Date(order.delivery_date).toLocaleDateString()
+                  : order.deliveryDate
+                  ? new Date(order.deliveryDate).toLocaleDateString()
+                  : "N/A"}
+              </small><br/>
+              <small>📞 {order.phone || "N/A"}</small><br/>
               <small>🏠 {order.address || "N/A"}</small>
             </td>
             <td className="product-cell">{order.product_name}</td>
