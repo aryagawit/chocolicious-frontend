@@ -47,9 +47,14 @@ const fetchData = async () => {
     setInventory(Array.isArray(invData) ? invData : (invData.inventory || []));
 
     // 3. Fetch Custom Orders
-const customRes = await fetch(`${baseURL}/api/admin/customizations`, {
+const customRes = await fetch(`${baseURL}/api/cart/customizations`, {
   headers: { "Authorization": `Bearer ${token}` }
 });
+
+if (!customRes.ok) {
+  console.error("Custom orders API not found");
+  return;
+}
 
 const customData = await customRes.json();
 
@@ -156,7 +161,7 @@ setCustomOrders(
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch(`${baseURL}/api/admin/customizations/status`, {
+    const res = await fetch(`${baseURL}/api/cart/customizations/status`, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,
