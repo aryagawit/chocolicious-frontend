@@ -222,6 +222,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
     sortedOrders
         .filter(o => (o.payment_status || "").toLowerCase() !== "completed")
         .map((order) => {
+          console.log("ORDER DATA:", order);
         const isDelivered = (order.order_status || "").toLowerCase() === "delivered";
         return (
           <tr key={order.order_id}>
