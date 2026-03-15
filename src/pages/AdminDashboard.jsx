@@ -229,13 +229,7 @@ console.log("History count:", orders.filter(o => (o.payment_status || "").toLowe
             <td>
               <strong>ID: {order.customer_id}</strong><br/>
               <small><FaUser /> {order.fullName || order.name || "N/A"}</small><br/>
-              <small>📅 Delivery: {
-                order.delivery_date
-                  ? new Date(order.delivery_date).toLocaleDateString()
-                  : order.deliveryDate
-                  ? new Date(order.deliveryDate).toLocaleDateString()
-                  : "N/A"}
-              </small><br/>
+              <small>📅 Order Date: {new Date(order.order_date).toLocaleDateString()}</small><br/>
               <small>📞 {order.phone || "N/A"}</small><br/>
               <small>🏠 {order.address || "N/A"}</small>
             </td>
